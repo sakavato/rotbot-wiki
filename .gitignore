@@ -1,10 +1,15 @@
-# Publish the learning artifacts and repository entry page.
-/*
-!/.gitignore
-!/README.md
-!/artifacts/
+# Original education notes and local writing records.
+/robot_edu_*.md
+/RobotControlPipeline.md
+/robotics_knowledge_design.md
+/robotics_learning_plan.md
+/robotics_learning_source.md
 
-# Local editor and operating-system files.
+# Local tools, credentials, and editor files.
+/.agents/
+/.codex/
+/.env
+/.env.*
 **/.DS_Store
 **/Thumbs.db
 **/*~
