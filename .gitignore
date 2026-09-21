@@ -1,0 +1,10 @@
+# Publish the learning artifacts and repository entry page.
+/*
+!/.gitignore
+!/README.md
+!/artifacts/
+
+# Local editor and operating-system files.
+**/.DS_Store
+**/Thumbs.db
+**/*~
