@@ -4,7 +4,7 @@
 
 목표와 실제 상태를 비교해 입력을 조절하고, 접촉할 때 힘과 움직임을 함께 다룬다.
 
-[피드백·피드포워드](#control) · [목표 유지·PD](#setpoint) · [힘·상호작용 제어](#interaction)
+[피드백·피드포워드](#control) · [목표 유지·PD](#setpoint) · [경로·궤적 추종](#tracking) · [힘·상호작용 제어](#interaction)
 
 <a id="control"></a>
 ## 기준과 실제의 차이를 다룬다
@@ -15,9 +15,18 @@
 
 ### 목표가 그대로여도 제어는 반복된다
 
-목표 각도 60°에 도착한 관절을 그대로 유지하려면 목표 각도와 실제 각도, 목표 속도 0과 실제 속도를 계속 비교해야 한다. 외부에서 밀리거나 하중이 바뀌면 다시 보정할 수 있어야 하기 때문이다. 이런 **고정 목표값 제어**(setpoint control)는 새 과업이 없는 대기 중에도 유효하다. [오버뷰의 대기 중 제어](../robotics_system_overview.md#closed-loop)
+목표 각도 60°에 도착한 관절을 그대로 유지하는 피드백 제어는 목표 각도와 실제 각도를 계속 비교한다. 목표 속도 0과 실제 속도의 차이도 보정에 사용할 수 있다. 외부에서 밀리거나 하중이 바뀌면 다시 보정할 수 있어야 하기 때문이다. 이런 **고정 목표값 제어**(setpoint control)는 새 과업이 없는 대기 중에도 유효하다. [오버뷰의 대기 중 제어](../robotics_system_overview.md#maintenance-goals)
 
 **비례·미분 제어**(proportional-derivative control, PD)는 위치 오차와 속도 오차를 함께 사용하는 방법이다. 정지한 목표로 이동할 때 위치 오차에 따른 항은 목표로 되돌리려는 역할을 하고, 속도에 따른 항은 움직임을 가라앉히는 **감쇠**(damping) 역할을 할 수 있다. 감쇠가 부족하면 목표를 지나쳤다가 되돌아오는 진동이 생길 수 있다. 반대로 오차를 줄이려는 반응을 무조건 크게 해도 구동 한계·지연·잡음 때문에 문제가 생길 수 있다. [PD 제어와 적용 조건](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-4-motion-control-with-torque-or-force-inputs-part-1-of-3/)
+
+<a id="tracking"></a>
+### 같은 경로를 가도 시간까지 맞춰야 하는가?
+
+**궤적 추종**(trajectory tracking)은 현재 시각의 목표 위치·속도 등을 실제 상태와 비교해 따라가게 하는 제어다. 예를 들어 시작 후 1초에 손이 중간 지점에 있어야 한다면, 경로 위에 있더라도 그보다 뒤처져 있으면 추종 오차가 생긴다. [오버뷰의 목표 궤적과 반복 제어](../robotics_system_overview.md#control-reference)
+
+**경로 추종**(path following)은 정해진 경로를 따라 진행하도록 하되, 각 지점의 통과 시각을 미리 고정하지 않는 문제다. 같은 선반 옆 경로를 가면서 상황에 따라 진행 속도를 조절하는 구성을 생각할 수 있다. 실제 속도 목표와 구동 제약은 별도로 고려한다. [경로 추종과 궤적 추종의 문제 구분](https://arxiv.org/abs/1703.02279)
+
+두 용어는 로봇의 움직임을 제어하는 문제다. 영상 속 대상의 상태를 알아내는 [물체 추적](estimation.md#object-tracking)과 구분한다.
 
 <a id="interaction"></a>
 
@@ -35,4 +44,4 @@
 | **어드미턴스 제어**(admittance control) | 측정한 외력에 대해 목표 위치·속도 등 움직임이 어떻게 바뀔지 정한다. | 손에 외력이 가해지면 목표 움직임을 바꾸어 손이 물러나게 한다. |
 | **혼합 운동·힘 제어**(hybrid motion–force control) | 방향에 따라 운동 목표와 힘 목표를 나누어 다룬다. | 평평한 면을 닦으면서 면을 따라 이동하고, 면에 수직인 방향으로는 누르는 힘을 조절한다. |
 
-스프링에 더해 가상 질량과 감쇠의 관계를 구성할 수도 있다. 이 방법을 읽을 때에는 **어떤 값을 관측하고, 어떤 움직임이나 힘을 목표로 만드는지** 연결하면 된다. [방향별 운동·힘 제어 예](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-6-hybrid-motion-force-control/) · [임피던스·어드미턴스의 교재 설명](https://hades.mech.northwestern.edu/images/b/b2/MR-2up.pdf)
+혼합 제어에서 운동 방향에 위치 목표를 주는 경우에는 **혼합 위치·힘 제어**(hybrid position–force control)라고 부른다. 임피던스·어드미턴스에서는 스프링에 더해 가상 질량과 감쇠의 관계를 구성할 수도 있다. 이 방법을 읽을 때에는 **어떤 값을 관측하고, 어떤 움직임이나 힘을 목표로 만드는지** 연결하면 된다. [방향별 운동·힘 제어 예](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-6-hybrid-motion-force-control/) · [임피던스·어드미턴스의 교재 설명](https://hades.mech.northwestern.edu/images/b/b2/MR-2up.pdf)

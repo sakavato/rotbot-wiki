@@ -36,6 +36,6 @@ Task space와 workspace는 모두 ‘작업 공간’으로 번역되기도 한�
 
 힘·토크와 관성의 출발점은 [본문의 물체 들기 예](../robotics_system_overview.md#vertical)다. 직선 운동에서는 물체에 작용하는 힘들을 합친 **알짜힘**(net force)과 가속도 사이에 `F = m × a`의 관계가 있다. `F`는 힘[N], `m`은 질량[kg], `a`는 가속도[m/s²]다. 같은 질량을 더 크게 가속하려면 더 큰 알짜힘이 필요하다. 물체를 정지 상태로 들고 있다면 가속도와 알짜힘은 0이지만, 손이 주는 위쪽 힘과 중력이 각각 0인 것은 아니다. 두 힘이 균형을 이루는 것이다. [뉴턴의 운동 법칙](https://openstax.org/books/university-physics-volume-1/pages/5-3-newtons-second-law)
 
-**기구학**(kinematics)이 구성과 운동의 기하학적 관계를 다룬다면, **동역학**(dynamics)은 그 운동과 힘·토크의 관계를 다룬다. **역동역학**(inverse dynamics)은 주어진 운동과 외력 조건에서 필요한 관절 힘·토크를 구한다. **정동역학**(forward dynamics)은 주어진 힘·토크에서 운동의 변화를 구하며 시뮬레이션에 연결된다. [역동역학과 정동역학의 관계](https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-3-newton-euler-inverse-dynamics/)
+**기구학**(kinematics)이 구성과 운동의 기하학적 관계를 다룬다면, **동역학**(dynamics)은 그 운동과 힘·토크의 관계를 다룬다. **역동역학**(inverse dynamics)은 주어진 운동과 외력 조건에서 필요한 관절 힘·토크를 구한다. **정동역학**(forward dynamics)은 현재 구성·속도와 가해지는 힘·토크에서 가속도를 구하며 시뮬레이션에 연결된다. [역동역학](https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-3-newton-euler-inverse-dynamics/) · [정동역학](https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-5-forward-dynamics-of-open-chains/)
 
 예를 들어 손이 같은 경로를 지나더라도 하중·자세·가속도가 달라지면 필요한 입력을 다시 검토해야 한다. 그래서 기구학적으로 가능한 자세, 동역학적으로 실행 가능한 움직임, 하드웨어가 실제로 만들 수 있는 출력은 구분해서 본다. 휴머노이드에서는 여기에 [몸체와 접촉 조건](contact.md#contact)이 더해진다.

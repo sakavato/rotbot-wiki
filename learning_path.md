@@ -64,7 +64,7 @@
 
 **전체 동작과의 연결:** 1일차의 몸 표현, 2일차의 구동, 3일차의 측정이 목표 움직임의 계획과 실행에서 만난다. 여러 알고리즘 이름을 모두 차례로 실행하는 단계로 읽기보다, 경로를 구하는 방법인지, 시간을 정하는 방법인지, 실행 중 입력을 조절하는 방법인지 구분하면 연결을 이해하기 쉽다.
 
-**읽을 곳:** 오버뷰 [2절: 자세·움직임 계획](robotics_system_overview.md#geometry)부터 [7절: 작업 통합](robotics_system_overview.md#integration)까지의 관련 설명, 개념 문서의 [계획](concepts/planning.md#planning)·[제어](concepts/control.md#control)·[접촉과 균형](concepts/contact.md#contact).
+**읽을 곳:** 오버뷰 [2절: 자세·움직임 계획](robotics_system_overview.md#geometry)부터 [7절: 작업 통합](robotics_system_overview.md#integration)까지의 관련 설명, 개념 문서의 [계획](concepts/planning.md#planning)·[추종 제어](concepts/control.md#tracking)·[상호작용 제어](concepts/control.md#interaction)·[접촉과 균형](concepts/contact.md#contact).
 
 <a id="day-5"></a>
 ## 5일차 — 시각 객체 추적과 시각 SLAM
@@ -85,7 +85,7 @@
 
 **전체 동작과의 연결:** 1일차에도 등장한 위치·지도 추정 문제를 센서·기하·확률·최적화와 개별 방법까지 연결해 살펴볼 수 있다. 물체 추적이 대상 물체의 상태를 다룬다면, 여기서는 로봇·카메라 자신의 움직임과 환경 지도의 관계에 주목한다.
 
-**읽을 곳:** 오버뷰 [1절: 위치·상태 파악](robotics_system_overview.md#estimation), [상태 추정·SLAM](concepts/estimation.md#estimation)·[시각·관성 추정](concepts/estimation.md#visual-inertial)·[좌표계와 시각](concepts/interfaces.md#interfaces), [적용 사례: 손은 닫혔는데 왜 집기에 실패했을까?](platform_robot_walkthrough.md).
+**읽을 곳:** 오버뷰 [1절: 위치·상태 파악](robotics_system_overview.md#estimation), [상태 추정·SLAM](concepts/estimation.md#estimation)·[시각·관성 추정](concepts/estimation.md#visual-inertial)·[좌표계와 시각](concepts/interfaces.md#interfaces), [적용 사례: 추정 위치가 갑자기 바뀌는 경우](platform_robot_walkthrough.md#position-jump).
 
 ## 이 안내와 나머지 문서를 함께 읽는 방법
 

@@ -21,7 +21,9 @@
 
 **경로**(path)는 지나갈 구성의 연결, **궤적**(trajectory)은 시간에 따른 움직임이다. 선반 옆을 돌아가는 같은 경로라도 1초에 이동할지 3초에 이동할지에 따라 필요한 속도·가속도가 달라진다. 그러므로 충돌 없는 경로를 얻은 뒤에도 시간과 구동 한계를 함께 검토해야 한다. 경로를 찾는 방법과 시간을 정하는 방법의 역할을 구분해서 읽는다. [Motion planning 개요](https://modernrobotics.northwestern.edu/nu-gm-book-resource/10-1-overview-of-motion-planning/)
 
-**시간 매개변수화**(time parameterization)는 경로를 어떤 시간 진행으로 실행할지 정하는 문제다. 시간 최적 경로 매개변수화(time-optimal path parameterization, TOPP)는 이 맥락에 놓인다. 단순히 곡선을 매끄럽게 만드는 보간(interpolation)과, 동역학·구동 제약 아래에서 실행 시간을 정하는 문제는 다르다. [Time-optimal time scaling](https://modernrobotics.northwestern.edu/nu-gm-book-resource/9-4-time-optimal-time-scaling-part-1-of-3/)
+**보간**(interpolation)은 주어진 지점 사이의 값을 정해 연결하는 방법이다. 예를 들어 관절이 거칠 각도와 통과 시각을 정하고, 그 사이의 목표 각도를 함수로 구해 궤적을 만들 수 있다. 어느 차수까지 매끄럽게 연결되는지는 보간 방법과 경계 조건에 따라 달라진다. [경유점을 잇는 보간 궤적](https://modernrobotics.northwestern.edu/nu-gm-book-resource/9-3-polynomial-via-point-trajectories/)
+
+**시간 매개변수화**(time parameterization)는 주어진 경로 위에서 시간에 따라 얼마나 진행할지 정하는 문제다. **시간 최적 경로 매개변수화**(time-optimal path parameterization, TOPP)는 구동·동역학 제약 아래에서 실행 시간을 줄이는 경우다. 보간으로 궤적을 연결하는 것만으로 이런 제약이 만족되지는 않는다. [Time-optimal time scaling](https://modernrobotics.northwestern.edu/nu-gm-book-resource/9-4-time-optimal-time-scaling-part-1-of-3/)
 
 <a id="planning-methods"></a>
 ### 그래프 탐색·샘플링·최적화는 어떻게 다른가?

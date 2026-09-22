@@ -61,6 +61,6 @@
 <a id="sensor-response"></a>
 ## 정확하게 재는 것과 빠르게 따라가는 것은 다르다
 
-**응답 시간**(response time)은 입력이 갑자기 변한 뒤 출력이 최종값 주위의 정해진 범위에 들어와 머물기까지 걸리는 시간이다. **대역폭**(bandwidth)은 정해진 응답 기준 안에서 따라갈 수 있는 변화의 주파수 범위이고, **샘플링 속도**(sampling rate)는 단위 시간에 값을 읽는 횟수다. 센서·회로가 느린 변화를 내보내면 그 값을 자주 읽어도 원래의 빠른 변화가 복원되지는 않는다. [응답 시간의 정의](https://jcgm.bipm.org/vim/en/4.23.html) · [대역폭과 샘플링의 구분](https://www.ni.com/en/shop/electronic-test-instrumentation/oscilloscopes/using-a-digitizer-for-time-domain-measurements.html)
+응답 시간을 읽을 때에는 측정 기준도 확인해야 한다. 예를 들어 **계단 응답 시간**(step response time)은 입력이 갑자기 변한 뒤 출력이 최종값 주위의 정해진 범위에 들어와 머물기까지 걸리는 시간이다. **대역폭**(bandwidth)은 정해진 응답 기준 안에서 따라갈 수 있는 변화의 주파수 범위이고, **샘플링 속도**(sampling rate)는 단위 시간에 값을 읽는 횟수다. 센서·회로가 느린 변화를 내보내면 그 값을 자주 읽어도 원래의 빠른 변화가 복원되지는 않는다. [계단 응답 시간의 정의](https://jcgm.bipm.org/vim/en/4.23.html) · [대역폭과 샘플링의 구분](https://www.ni.com/en/shop/electronic-test-instrumentation/oscilloscopes/using-a-digitizer-for-time-domain-measurements.html)
 
 물체가 미끄러지기 시작하는 짧은 변화를 잡으려면 정지 상태의 정확도뿐 아니라 이런 동적 특성도 봐야 한다. 측정값이 제어기에 늦게 도착하는 문제는 별도의 [지연·시각](interfaces.md#timing)과도 연결된다.

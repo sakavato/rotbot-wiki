@@ -47,7 +47,7 @@
 
 목표를 따라 움직이거나 멈춰 있을 때 무엇을 보정하는가?
 
-[피드백·피드포워드](concepts/control.md#control) · [목표 유지·PD](concepts/control.md#setpoint) · [힘·임피던스·어드미턴스 제어](concepts/control.md#interaction)
+[피드백·피드포워드](concepts/control.md#control) · [목표 유지·PD](concepts/control.md#setpoint) · [경로·궤적 추종](concepts/control.md#tracking) · [힘·임피던스·어드미턴스 제어](concepts/control.md#interaction)
 
 <a id="contact"></a>
 <a id="floating-base"></a>
