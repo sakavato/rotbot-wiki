@@ -51,7 +51,7 @@
 
 **전체 동작과의 연결:** 1일차의 햅틱스가 감각과 피드백의 관점을 포함했다면, 이 날의 메모는 접촉을 측정하는 장치와 측정 품질을 더 구체적으로 다룬다. 물체를 잡았는지, 미끄러지는지 판단하려면 어떤 값이 측정되며 그 값이 언제 유효한지 알아야 한다.
 
-**읽을 곳:** 오버뷰 [5절: 접촉과 파지](robotics_system_overview.md#contact), 개념 문서의 [센서 범위·분해능·불확실성](concepts.md#hardware), [적용 사례: 손은 닫혔는데 왜 물체를 놓쳤을까?](platform_robot_walkthrough.md).
+**읽을 곳:** 오버뷰 [5절: 접촉과 파지](robotics_system_overview.md#contact), 개념 문서의 [센서의 정확도·정밀도·분해능](concepts.md#sensor-quality), [적용 사례: 손은 닫혔는데 왜 집기에 실패했을까?](platform_robot_walkthrough.md).
 
 <a id="day-4"></a>
 ## 4일차 — 동작 계획과 제어
@@ -77,13 +77,15 @@
 
 **전체 동작과의 연결:** 로봇이 다룰 물체가 움직이거나 잠시 가려질 때도 그 물체의 상태와 동일성을 이어서 파악하는 문제와 연결된다. 4일차의 ‘추종 제어’는 몸이 목표 움직임을 따르게 하는 문제이므로, 같은 tracking이라는 단어가 등장해도 구분해야 한다.
 
+**개념 보충:** [검출·데이터 연관·물체 추적의 차이](concepts.md#object-tracking).
+
 ### 로봇의 위치와 지도를 구하는 시각 SLAM
 
 카메라·라이다(LiDAR)·관성 측정 장치(inertial measurement unit, IMU) 등 센서, 전단의 특징 추출(feature extraction)·대응·운동 추정, 후단의 필터링·최적화·지도 관리가 기록되어 있다. 루프 폐합(loop closure), 시각·관성 주행 추정(visual-inertial odometry, VIO), 지도 표현, 운동으로부터의 구조 복원(structure from motion, SfM)과 관련 도구·연구 사례도 포함한다.
 
 **전체 동작과의 연결:** 1일차에도 등장한 위치·지도 추정 문제를 센서·기하·확률·최적화와 개별 방법까지 연결해 살펴볼 수 있다. 물체 추적이 대상 물체의 상태를 다룬다면, 여기서는 로봇·카메라 자신의 움직임과 환경 지도의 관계에 주목한다.
 
-**읽을 곳:** 오버뷰 [1절: 위치·상태 파악](robotics_system_overview.md#estimation), 개념 문서의 [추정](concepts.md#estimation)·[좌표계와 시각](concepts.md#interfaces), [적용 사례: 손은 닫혔는데 왜 물체를 놓쳤을까?](platform_robot_walkthrough.md).
+**읽을 곳:** 오버뷰 [1절: 위치·상태 파악](robotics_system_overview.md#estimation), 개념 문서의 [추정](concepts.md#estimation)·[좌표계와 시각](concepts.md#interfaces), [적용 사례: 손은 닫혔는데 왜 집기에 실패했을까?](platform_robot_walkthrough.md).
 
 ## 이 안내와 나머지 문서를 함께 읽는 방법
 

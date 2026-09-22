@@ -2,7 +2,7 @@
 
 [처음으로](README.md)
 
-2026-09-20 초안의 출처 목록에 2026-09-22까지 기초 개념·유지 목표·전신 제어와 적용 사례를 보강하는 데 사용한 자료를 추가했다. 본문에는 해당 주장을 뒷받침하는 링크를 가까이 배치했다. 여기서는 어떤 목적으로 참고했는지와 해석의 범위를 기록한다. 전체 연결도는 아래 자료의 기능 관계를 학습 목적으로 종합한 작성자의 도식이며, 특정 제품의 아키텍처를 전사한 것이 아니다. 교재나 논문 전체의 검증을 완료했다는 뜻은 아니다.
+2026-09-20 초안의 출처 목록에 2026-09-22까지 기초 개념·유지 목표·전신 제어·물체 추적·센서 측정 품질과 적용 사례를 보강하는 데 사용한 자료를 추가했다. 본문에는 해당 주장을 뒷받침하는 링크를 가까이 배치했다. 여기서는 어떤 목적으로 참고했는지와 해석의 범위를 기록한다. 전체 연결도는 아래 자료의 기능 관계를 학습 목적으로 종합한 작성자의 도식이며, 특정 제품의 아키텍처를 전사한 것이 아니다. 교재나 논문 전체의 검증을 완료했다는 뜻은 아니다.
 
 ## 1. 자료의 출발점
 
@@ -40,11 +40,12 @@
 |---|---|---|
 | Cadena 외, [SLAM survey](https://arxiv.org/abs/1606.05830) | §II의 front-end/back-end·데이터 연관·추정 방식 | 2016년 개관; 벽 무늬의 대응 예는 설명용이며 최신 알고리즘 순위가 아님 |
 | Hartley 외, [Contact-aided InEKF](https://arxiv.org/abs/1904.09251) | 초록에 설명된 IMU·기구학·접촉 기반 상태 추정 | 특정 이족 연구 사례; 전체 휴머노이드에 대한 성능 보장 없음 |
-| Bewley 외, [SORT](https://arxiv.org/abs/1602.00763) | 초록의 검출·연관·필터 기반 물체 추적 구조 | 로봇 자체의 위치 추정과 구분하는 사례 |
+| Bewley 외, [SORT](https://arxiv.org/html/1602.00763) | §3.1–3.3의 검출·상태 예측과 갱신·데이터 연관 | 상자 두 개의 예는 역할을 설명하기 위한 가정. 논문의 실제 평가는 보행자 추적이며 로봇 집기 성능을 검증한 것은 아님 |
 | Kuindersma 외, [Atlas 통합 연구](https://dspace.mit.edu/entities/publication/6cb6cad7-9288-419c-aa5a-cc44744f2e91) | 인지·계획·추정·제어 통합의 연구 사례 | 2016년 논문; 현대 모든 휴머노이드의 표준 구조라는 의미가 아님 |
 | [Benchmarking Whole-Body Controllers on the TALOS Humanoid Robot](https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2022.826491/full) | §1.2·3.1·3.2의 동시 목표, 엄격한 우선순위와 가중치·제약의 구분 | 2022년 시뮬레이션 비교 연구; 본문의 집기·대기 상황은 원리를 연결한 설명용 예이며 논문의 실험 결과가 아님 |
 | [Humanoid-Gym](https://arxiv.org/abs/2404.05695) | 2024년 논문 초록의 학습 기반 보행·sim-to-real 사례 | 적용 사례로만 사용; 상세 재현·비교 실험 미수행 |
 | [ASAP](https://arxiv.org/abs/2502.01143) | 2025년 논문 초록의 시뮬레이션·실제 동역학 차이 | 최신 기술 전수 조사나 일반 성능 보장이 아님 |
+| JCGM, VIM3 [정확도 §2.13](https://jcgm.bipm.org/vim/en/2.13.html)·[정밀도 §2.15](https://jcgm.bipm.org/vim/en/2.15.html)·[반복성 §2.21](https://jcgm.bipm.org/vim/en/2.21.html)과 [반복 조건 §2.20](https://jcgm.bipm.org/vim/en/2.20.html) | 참값과의 가까움, 반복값의 퍼짐, 반복성을 평가하는 조건의 구분 | 10 N을 측정하는 A·B 센서의 수치는 설명용 가정이며 특정 제품의 시험 결과가 아님 |
 | NIST, [Basic definitions of uncertainty](https://physics.nist.gov/cuu/Uncertainty/glossary.html) | 측정 불확실성과 값의 퍼짐, 표준편차·구간 표현 | 특정 센서의 수치 평가가 아닌 용어 설명 |
 | ATI, [Force/Torque FAQ](https://www.ati-ia.com/library/documents/FT_FAQ.pdf) | §2 측정 범위·분해능·불확실성·포화 시 유효성 | 2020년 제조사 문서; 포화가 항상 같은 숫자를 출력한다거나 모든 센서의 상태 신호가 동일하다고 가정하지 않음 |
 
