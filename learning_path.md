@@ -29,7 +29,7 @@
 
 **전체 동작과의 연결:** 손을 어디로 보낼지 정하려면 몸의 구조와 현재 상태를 표현할 수 있어야 한다. 접촉을 통해 얻는 정보와 위치·지도 추정은 각각 무엇을 알아내는지 구분해서 본다. 1일차 전체를 기구학만 배운 날로 축약하면 햅틱스와 SLAM의 맥락이 빠진다.
 
-**읽을 곳:** 오버뷰 [1절: 위치·상태](robotics_system_overview.md#estimation), [2절: 자세·움직임](robotics_system_overview.md#geometry), [5절: 접촉](robotics_system_overview.md#contact). 용어는 [몸의 표현](concepts.md#geometry)과 [상태 추정](concepts.md#estimation)에서 보충한다.
+**읽을 곳:** 오버뷰 [1절: 위치·상태](robotics_system_overview.md#estimation), [2절: 자세·움직임](robotics_system_overview.md#geometry), [5절: 접촉](robotics_system_overview.md#contact). 용어는 [몸의 표현](concepts/geometry.md#geometry)·[햅틱스](concepts/sensing.md#haptics)·[상태 추정](concepts/estimation.md#estimation)에서 보충한다.
 
 <a id="day-2"></a>
 ## 2일차 — 전기 모터와 구동
@@ -38,9 +38,9 @@
 
 구동·제어 항목에는 피드백(feedback)·피드포워드(feedforward), 구동 회로와 서보 모터(servo motor)가 있다. 로봇의 적용 예를 통해 관절에 맞는 모터를 선택하는 문제로 이어진다.
 
-**전체 동작과의 연결:** 계획이나 제어가 명령한 값은 구동계를 거쳐 실제 힘과 움직임이 된다. 이 날의 내용을 통해 모터·전달계의 특성이 어떤 동작을 수행할 수 있는지와 연결된다는 점을 살펴볼 수 있다. 회로를 구동하는 방식과 제어하려는 물리량의 구분은 [PWM과 제어 목표](concepts.md#motor-control)에서 보충한다.
+**전체 동작과의 연결:** 계획이나 제어가 명령한 값은 구동계를 거쳐 실제 힘과 움직임이 된다. 이 날의 내용을 통해 모터·전달계의 특성이 어떤 동작을 수행할 수 있는지와 연결된다는 점을 살펴볼 수 있다. 회로를 구동하는 방식과 제어하려는 물리량의 구분은 [PWM과 제어 목표](concepts/actuation.md#motor-control)에서 보충한다.
 
-**읽을 곳:** 오버뷰 [3절: 힘·구동 능력](robotics_system_overview.md#vertical), [4절: 피드백](robotics_system_overview.md#closed-loop), 개념 문서의 [구동과 센싱](concepts.md#hardware).
+**읽을 곳:** 오버뷰 [3절: 힘·구동 능력](robotics_system_overview.md#vertical), [4절: 피드백](robotics_system_overview.md#closed-loop), [모터 원리·종류·서보·감속비](concepts/actuation.md).
 
 <a id="day-3"></a>
 ## 3일차 — 힘·촉각 센싱
@@ -51,7 +51,7 @@
 
 **전체 동작과의 연결:** 1일차의 햅틱스가 감각과 피드백의 관점을 포함했다면, 3일차에서는 접촉을 측정하는 장치와 측정 품질을 더 구체적으로 다룬다. 물체를 잡았는지, 미끄러지는지 판단하려면 어떤 값이 측정되며 그 값이 언제 유효한지 알아야 한다.
 
-**읽을 곳:** 오버뷰 [5절: 접촉과 파지](robotics_system_overview.md#contact), 개념 문서의 [센서의 정확도·정밀도·분해능](concepts.md#sensor-quality), [적용 사례: 손은 닫혔는데 왜 집기에 실패했을까?](platform_robot_walkthrough.md).
+**읽을 곳:** 오버뷰 [5절: 접촉과 파지](robotics_system_overview.md#contact), [촉각·힘 센서와 센싱 원리](concepts/sensing.md#tactile-force), [측정 품질·응답 속도](concepts/sensing.md#sensor-quality), [적용 사례: 손은 닫혔는데 왜 집기에 실패했을까?](platform_robot_walkthrough.md).
 
 <a id="day-4"></a>
 ## 4일차 — 동작 계획과 제어
@@ -64,7 +64,7 @@
 
 **전체 동작과의 연결:** 1일차의 몸 표현, 2일차의 구동, 3일차의 측정이 목표 움직임의 계획과 실행에서 만난다. 여러 알고리즘 이름을 모두 차례로 실행하는 단계로 읽기보다, 경로를 구하는 방법인지, 시간을 정하는 방법인지, 실행 중 입력을 조절하는 방법인지 구분하면 연결을 이해하기 쉽다.
 
-**읽을 곳:** 오버뷰 [2절: 자세·움직임 계획](robotics_system_overview.md#geometry)부터 [7절: 작업 통합](robotics_system_overview.md#integration)까지의 관련 설명, 개념 문서의 [계획](concepts.md#planning)·[제어](concepts.md#control)·[접촉과 균형](concepts.md#contact).
+**읽을 곳:** 오버뷰 [2절: 자세·움직임 계획](robotics_system_overview.md#geometry)부터 [7절: 작업 통합](robotics_system_overview.md#integration)까지의 관련 설명, 개념 문서의 [계획](concepts/planning.md#planning)·[제어](concepts/control.md#control)·[접촉과 균형](concepts/contact.md#contact).
 
 <a id="day-5"></a>
 ## 5일차 — 시각 객체 추적과 시각 SLAM
@@ -77,7 +77,7 @@
 
 **전체 동작과의 연결:** 로봇이 다룰 물체가 움직이거나 잠시 가려질 때도 그 물체의 상태와 동일성을 이어서 파악하는 문제와 연결된다. 4일차의 ‘추종 제어’는 몸이 목표 움직임을 따르게 하는 문제이므로, 같은 tracking이라는 단어가 등장해도 구분해야 한다.
 
-**개념 보충:** [검출·데이터 연관·물체 추적의 차이](concepts.md#object-tracking).
+**개념 보충:** [검출·데이터 연관·물체 추적](concepts/estimation.md#object-tracking), [단일·다중 객체와 2D·3D 추적](concepts/estimation.md#tracking-scope).
 
 ### 로봇의 위치와 지도를 구하는 시각 SLAM
 
@@ -85,12 +85,12 @@
 
 **전체 동작과의 연결:** 1일차에도 등장한 위치·지도 추정 문제를 센서·기하·확률·최적화와 개별 방법까지 연결해 살펴볼 수 있다. 물체 추적이 대상 물체의 상태를 다룬다면, 여기서는 로봇·카메라 자신의 움직임과 환경 지도의 관계에 주목한다.
 
-**읽을 곳:** 오버뷰 [1절: 위치·상태 파악](robotics_system_overview.md#estimation), 개념 문서의 [추정](concepts.md#estimation)·[좌표계와 시각](concepts.md#interfaces), [적용 사례: 손은 닫혔는데 왜 집기에 실패했을까?](platform_robot_walkthrough.md).
+**읽을 곳:** 오버뷰 [1절: 위치·상태 파악](robotics_system_overview.md#estimation), [상태 추정·SLAM](concepts/estimation.md#estimation)·[시각·관성 추정](concepts/estimation.md#visual-inertial)·[좌표계와 시각](concepts/interfaces.md#interfaces), [적용 사례: 손은 닫혔는데 왜 집기에 실패했을까?](platform_robot_walkthrough.md).
 
 ## 이 안내와 나머지 문서를 함께 읽는 방법
 
 수강 전에는 위 표와 각 일자의 **교육 내용·전체 동작과의 연결**을 읽어 다룰 분야를 먼저 확인한다. 수강 중이나 수강 후에는 해당 일자의 링크로 오버뷰와 개념 설명을 찾아가면 된다. 로봇 전체 원리를 먼저 이해하고 싶다면 [오버뷰](robotics_system_overview.md)부터 읽고, 여기서 교육 키워드의 위치를 확인해도 된다.
 
-용어의 뜻을 찾아볼 때는 [분야별 개념](concepts.md)을 사용한다. 이 문서는 전체 동작을 이해하는 데 필요한 개념을 선택해 보충한다. 감각 생리의 세부, 모터·촉각 센서의 구현, 개별 추적·SLAM 알고리즘의 계보 등은 구체적인 학습 필요가 생길 때 선택해서 살펴본다. 여러 날에 등장한 용어는 공통 설명으로 연결하고, 각 일자에서는 그 용어가 어떤 주제와 함께 다뤄졌는지 설명한다.
+용어의 뜻을 찾아볼 때는 위의 직접 링크나 [분야별 개념 찾아보기](concepts.md)를 사용한다. 분야별 글은 전체 동작을 이해하는 데 필요한 개념을 예시와 함께 보충한다. 감각 생리의 세부, 모터·촉각 센서의 구현, 개별 추적·SLAM 알고리즘의 계보 등은 구체적인 학습 필요가 생길 때 선택해서 살펴본다. 여러 날에 등장한 용어는 공통 설명으로 연결하고, 각 일자에서는 그 용어가 어떤 주제와 함께 다뤄졌는지 설명한다.
 
 필요에 따라 더 알아볼 질문은 [선택 심화와 확장 방향](concepts.md#further-study)에, 기술적 근거와 사용 범위는 [출처 목록](references.md)에 정리했다.

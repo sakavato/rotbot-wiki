@@ -30,8 +30,8 @@
 
 | 생각할 가능성 | 구분에 도움이 되는 정보 | 오버뷰·개념과의 연결 |
 |---|---|---|
-| 손이 물체를 빗나갔다. | 손가락을 닫던 시각의 손·물체 위치를 같은 좌표계에서 비교한다. 당시 영상도 함께 본다. | [위치·상태 추정](robotics_system_overview.md#estimation) → [동작 계획](robotics_system_overview.md#geometry), [좌표계·시각](concepts.md#interfaces) |
-| 물체에 닿았지만 들면서 미끄러졌다. | 접촉 시점과 들기 중의 힘·촉각 정보, 손에 대한 물체의 상대 움직임을 본다. | [접촉·파지](robotics_system_overview.md#contact), [마찰과 접촉력](concepts.md#contact) |
+| 손이 물체를 빗나갔다. | 손가락을 닫던 시각의 손·물체 위치를 같은 좌표계에서 비교한다. 당시 영상도 함께 본다. | [위치·상태 추정](robotics_system_overview.md#estimation) → [동작 계획](robotics_system_overview.md#geometry), [좌표계·시각](concepts/interfaces.md#interfaces) |
+| 물체에 닿았지만 들면서 미끄러졌다. | 접촉 시점과 들기 중의 힘·촉각 정보, 손에 대한 물체의 상대 움직임을 본다. | [접촉·파지](robotics_system_overview.md#contact), [마찰과 접촉력](concepts/contact.md#contact) |
 | 요구한 움직임·힘을 구동부가 만들지 못했다. | 목표와 측정 상태, 명령한 입력과 구동 한계·상태를 함께 본다. | [힘·구동 능력](robotics_system_overview.md#vertical), [피드백](robotics_system_overview.md#closed-loop) |
 
 표의 가능성은 구분을 위한 예이며, 현재 관측만으로 어느 하나를 원인으로 확정한 것은 아니다. 특히 접촉력이 실제로 측정된 값인지 모델로 추정한 값인지도 구별해야 한다.
@@ -51,7 +51,7 @@
 
 먼저 센서의 측정 범위·유효 상태와 관측 시각을 함께 확인한다. ATI의 힘·토크 센서 설명에서는 보정 범위를 넘는 포화(saturation) 상태에서 출력값이 유효하지 않을 수 있다고 설명한다. 포화 시 반드시 특정 숫자로 고정된다는 뜻은 아니며, 제품의 상태 정보와 명세를 함께 해석해야 한다. [ATI F/T FAQ §2.1.2–2.1.3](https://www.ati-ia.com/library/documents/FT_FAQ.pdf)
 
-유효한 힘 측정값을 얻었더라도 그것이 곧 ‘물체를 보유하고 있다’는 작업 판단은 아니다. 어떤 부위의 어떤 방향 힘인지, 물체가 손과 함께 움직이는지도 확인해야 한다. 이 사례는 도식의 **센싱 → 인지·상태 추정 → 작업 판단·제어**에서 측정값의 의미가 어떻게 사용되는지 보여준다. [구동과 센싱의 조건](concepts.md#hardware)
+유효한 힘 측정값을 얻었더라도 그것이 곧 ‘물체를 보유하고 있다’는 작업 판단은 아니다. 어떤 부위의 어떤 방향 힘인지, 물체가 손과 함께 움직이는지도 확인해야 한다. 이 사례는 도식의 **센싱 → 인지·상태 추정 → 작업 판단·제어**에서 측정값의 의미가 어떻게 사용되는지 보여준다. [센서의 측정 조건](concepts/sensing.md#sensor-quality)
 
 <a id="position-jump"></a>
 ## 3. 화면 속 로봇 위치가 갑자기 바뀌면 몸이 움직인 것일까?
@@ -60,4 +60,4 @@
 
 ROS REP-105를 사용하는 구성에서는 `odom` 기준 위치가 연속적으로 변하도록 정의되어 있고, `map` 기준 위치는 추정 보정으로 불연속적으로 바뀔 수 있다. 따라서 `map` 값의 변화가 곧 실제 몸의 순간 이동을 뜻하지 않는다. 그 시각의 좌표 변환 변화와 별도의 움직임 관측을 함께 보아야 한다. 이는 해당 좌표계 규약을 사용하는 구성의 예다. [REP-105의 좌표계 정의](https://raw.githubusercontent.com/ros-infrastructure/rep/master/rep-0105.rst)
 
-집기 작업에서는 로봇·물체·손의 위치가 어떤 기준과 시각으로 표현되었는지가 접근 목표에 영향을 준다. 이 보충 예는 **센싱 → 상태 추정 → 동작 계획**의 연결을 다시 보는 데 쓰인다. [오버뷰의 좌표계 설명](robotics_system_overview.md#estimation) · [정보의 기준과 시각](concepts.md#interfaces)
+집기 작업에서는 로봇·물체·손의 위치가 어떤 기준과 시각으로 표현되었는지가 접근 목표에 영향을 준다. 이 보충 예는 **센싱 → 상태 추정 → 동작 계획**의 연결을 다시 보는 데 쓰인다. [오버뷰의 좌표계 설명](robotics_system_overview.md#estimation) · [정보의 기준과 시각](concepts/interfaces.md#interfaces)

@@ -13,7 +13,7 @@
 | Lynch·Park, [Modern Robotics 2.5](https://modernrobotics.northwestern.edu/nu-gm-book-resource/2-5-task-space-and-workspace/) | Task space와 workspace | 용어 구분 |
 | 같은 교재, [Inverse Kinematics](https://modernrobotics.northwestern.edu/nu-gm-book-resource/inverse-kinematics-of-open-chains/) | FK와 IK의 관계, 해의 존재·다중성 | 개념 설명 |
 | 같은 교재, [5.1.1 Jacobian](https://modernrobotics.northwestern.edu/nu-gm-book-resource/5-1-1-space-jacobian/), [5.3 Singularities](https://modernrobotics.northwestern.edu/nu-gm-book-resource/5-3-singularities/) | 속도·힘 관계, 일자로 편 평면 팔의 순간 운동과 특이점 | 설명용 팔 자세의 예; 공식의 상세 유도는 초안 밖 |
-| 같은 교재, [8.9 Actuation, Gearing, Friction](https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-9-actuation-gearing-and-friction/) | 구동·전달계 특성, 마찰·관성과 토크 제어 조건 | 특정 제조사의 성능 판단에는 사용하지 않음 |
+| 같은 교재, [8.9 Actuation, Gearing, Friction](https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-9-actuation-gearing-and-friction/) | 모터 구조, 감속비·속도·토크·기계적 출력, 마찰·관성과 토크 제어 조건 | 특정 제조사의 성능 판단에는 사용하지 않음 |
 | 같은 교재, [8.3 Inverse dynamics](https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-3-newton-euler-inverse-dynamics/) | 운동과 필요한 힘·토크의 관계 | 고정 기반 개방 사슬 설명을 휴머노이드 전체에 그대로 적용하지 않음 |
 | 같은 교재, [9.4 Time scaling](https://modernrobotics.northwestern.edu/nu-gm-book-resource/9-4-time-optimal-time-scaling-part-1-of-3/), [10.1 Motion planning](https://modernrobotics.northwestern.edu/nu-gm-book-resource/10-1-overview-of-motion-planning/) | 경로·시간·실행 가능성 | 개별 알고리즘 우열을 결정하지 않음 |
 | 같은 교재, [11.1 Control](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-1-control-system-overview/), [11.5 Force control](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-5-force-control/) | 폐루프와 구동, 드라이버 내부 전류·토크 피드백, 힘 목표·관절 토크 | 5 N 목표와 3 N 측정 예는 설명용이며 제어기 설정값이 아님 |
@@ -26,6 +26,8 @@
 | Tedrake, [Planning and Control through Contact](https://underactuated.mit.edu/contact.html) | 접촉 모드와 부유 기저: Deriving hybrid models 절의 몸체 6자유도·접촉 제약 | 몸체의 배치가 세계에 고정되지 않는다는 설명이며 실제로 공중에 떠 있다는 의미가 아님 |
 | Tedrake, [Trajectory Optimization](https://underactuated.mit.edu/trajopt.html) | 최적화·direct collocation·MPC | 문제 형식과 실행 방식의 구분 |
 | Texas Instruments, [Real-Time Control Reference Guide](https://www.ti.com/lit/pdf/slyy211#page=67) | 2021년판 인쇄 67쪽의 PWM과 듀티비 정의 | 전기 입력을 만드는 방식의 개념 설명. 특정 모터 드라이버의 설정값·성능을 제시하지 않음 |
+| Texas Instruments, [Motor Types 강의](https://www.ti.com/video/6067548423001)와 [강의 자료](https://www.ti.com/content/dam/videos/external-videos/en-us/4/3816841626001/6067548423001.mp4/subassets/precision_labs_motor_types.pdf), [Servo & stepper drives](https://www.ti.com/applications/industrial/industrial-automation/servo-stepper-drives/overview.html) | 브러시 DC·BLDC·스테퍼의 구동 차이, 서보의 피드백 구성 | 모터 종류와 제어 구성의 구분; 제품 선택·성능 비교는 하지 않음 |
+| Modern Robotics [10.5 PRM](https://modernrobotics.northwestern.edu/nu-gm-book-resource/10-5-sampling-methods-for-motion-planning-part-1-of-2/)·[RRT](https://modernrobotics.northwestern.edu/nu-gm-book-resource/10-5-sampling-methods-for-motion-planning-part-2-of-2/), [10.7 Nonlinear Optimization](https://modernrobotics.northwestern.edu/nu-gm-book-resource/10-7-nonlinear-optimization/) | 샘플링·그래프 탐색의 결합, 최적화의 비용·제약·국소 해 | 각 접근의 역할을 설명하며, 고정된 실행 순서로 제시하지 않음 |
 
 ## 2. 연구 사례와 센싱
 
@@ -41,6 +43,12 @@
 | JCGM, VIM3 [정확도 §2.13](https://jcgm.bipm.org/vim/en/2.13.html)·[정밀도 §2.15](https://jcgm.bipm.org/vim/en/2.15.html)·[반복성 §2.21](https://jcgm.bipm.org/vim/en/2.21.html)과 [반복 조건 §2.20](https://jcgm.bipm.org/vim/en/2.20.html) | 참값과의 가까움, 반복값의 퍼짐, 반복성을 평가하는 조건의 구분 | 10 N을 측정하는 A·B 센서의 수치는 설명용 가정이며 특정 제품의 시험 결과가 아님 |
 | NIST, [Basic definitions of uncertainty](https://physics.nist.gov/cuu/Uncertainty/glossary.html) | 측정 불확실성과 값의 퍼짐, 표준편차·구간 표현 | 특정 센서의 수치 평가가 아닌 용어 설명 |
 | ATI, [Force/Torque FAQ](https://www.ati-ia.com/library/documents/FT_FAQ.pdf) | §2 측정 범위·분해능·불확실성·포화 시 유효성 | 2020년 제조사 문서; 포화가 항상 같은 숫자를 출력한다거나 모든 센서의 상태 신호가 동일하다고 가정하지 않음 |
+| Stanford CHARM Lab, [Research](https://charm.stanford.edu/Main/Research)·[Teleoperation and Haptics for Surgery](https://charm.stanford.edu/Main/TeleoperationAndHapticsForSurgery) | 피부 감각·운동 감각, 힘·피부 자극 피드백 | 컵과 원격 조작은 역할을 설명하는 예이며 연구 성능을 주장하지 않음 |
+| [MEMS-Based Tactile Sensors: Materials, Processes and Applications in Robotics](https://pmc.ncbi.nlm.nih.gov/articles/PMC9782357/), Kistler [Piezo vs. strain gauge](https://www.kistler.com/US/en/piezo-vs.-strain-gauge/C00000145) | 촉각 배열, 저항·정전용량·광학 방식, 압전 전하와 장시간 측정 조건 | 변환 원리만 사용; 소재·제품의 우열이나 최신 동향을 판단하지 않음 |
+| ATI, [Multi-Axis Force/Torque Sensors](https://ati-ia.com/products/ft/sensors.aspx)·[System Interfaces](https://www.ati-ia.com/products/ft/ft_SystemInterfaces.aspx) | 6축 힘·토크, 게이지 신호의 증폭·디지털화·보정 | 손끝과 손목은 측정 위치를 비교하는 설명용 예; 제품 사양 수치는 사용하지 않음 |
+| JCGM [Step response time §4.23](https://jcgm.bipm.org/vim/en/4.23.html), NI [Using a Digitizer for Time-Domain Measurements](https://www.ni.com/en/shop/electronic-test-instrumentation/oscilloscopes/using-a-digitizer-for-time-domain-measurements.html) | 응답 시간, 대역폭과 샘플링 속도의 구분 | 동적 측정의 기본 구분; 특정 센서에 필요한 주파수를 정하지 않음 |
+| Qin 외, [VINS-Mono](https://arxiv.org/html/1708.03852v1)·[Relocalization, Global Optimization and Map Merging](https://arxiv.org/abs/1803.01549) | 시각·관성 결합, VIO 누적 오차와 루프 폐합·지도 보정의 관계 | 센서 역할과 추정 범위 설명; 성능 수치를 일반화하지 않음 |
+| VOT, [Tracker integration](https://votchallenge.net/howto/integration_multiobject.html) | 지정한 대상의 초기화와 단일·복수 추적 예 | SORT와 함께 추적 문제의 범위를 구분; 평가 순위·구현 방법은 설명하지 않음 |
 
 ## 3. SW 인터페이스와 적용 조건
 
