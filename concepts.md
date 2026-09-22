@@ -17,7 +17,7 @@
 | 명령·측정값을 그대로 믿을 수 없는 이유는? | [6. 구동과 센싱](#hardware) | [3절: 구동](robotics_system_overview.md#vertical), [5절: 접촉 측정](robotics_system_overview.md#contact) |
 | 같은 숫자가 다른 뜻으로 쓰이지 않으려면? | [7. 정보의 기준과 시각](#interfaces) | [1절: 좌표계](robotics_system_overview.md#estimation), [4절: 지연](robotics_system_overview.md#closed-loop) |
 
-개념을 읽은 뒤에는 [집기 작업에 적용하는 사례](platform_robot_walkthrough.md)에서 목표·명령·관측·실제 결과를 구분해 볼 수 있다.
+개념을 읽은 뒤에는 [집기 작업에 적용하는 사례](platform_robot_walkthrough.md)에서 목표·명령·관측·실제 결과를 구분해 볼 수 있다. 더 깊게 알아볼 문제가 생기면 끝부분의 [선택 심화와 확장 방향](#further-study)을 참고한다.
 
 <a id="geometry"></a>
 ## 1. 몸의 구조와 움직임을 표현하는 언어
@@ -197,9 +197,18 @@ CoM은 질량 분포의 중심이고, CoP는 접촉 압력이 어디에 실리�
 <a id="hardware"></a>
 ## 6. 구동과 센싱은 알고리즘의 조건을 만든다
 
-**구동기**(actuator)는 물리적 힘·움직임을 만들고, **전달계**(transmission)는 이를 관절에 전달한다. 감속기(speed reducer)는 속도와 토크를 바꾸며 마찰(friction)·관성(inertia) 등 동적 특성에도 영향을 준다. **역구동성**(backdrivability)은 외부 힘으로 구동계를 역으로 움직이기 쉬운 성질이다. 센서가 외력을 알아내는 것과 기계적으로 잘 역구동되는 것은 별개의 성질이다. [구동·감속·마찰](https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-9-actuation-gearing-and-friction/)
+**구동기**(actuator)는 물리적 힘·움직임을 만들고, **전달계**(transmission)는 이를 관절에 전달한다. 감속기(speed reducer)는 속도와 토크를 바꾸며 마찰(friction)·관성(inertia) 등 동적 특성에도 영향을 준다. **역구동성**(backdrivability)은 외부 힘으로 구동계를 역으로 움직이기 쉬운 성질이다. 센서가 외력을 알아내는 것, 제어가 그 힘에 반응해 몸을 움직이는 것, 기계적으로 잘 역구동되는 것은 구분한다. [구동·감속·마찰](https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-9-actuation-gearing-and-friction/)
 
 모터 전류(motor current), 출력 관절 토크, 손끝의 힘은 서로 다른 물리량이다. 그 사이를 연결하려면 전달계·마찰·기구 모델이 필요하다. 예를 들어 손끝에서 같은 힘을 버티더라도 팔을 접었는지 뻗었는지에 따라 관절에 필요한 토크가 달라진다. 그래서 전류 하나만 보고 물체에 가한 힘이나 파지 성공을 바로 판단할 수 없다. [손의 힘과 관절 토크](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-5-force-control/)
+
+관절 토크를 조절할 때는 토크 센서의 피드백을 사용할 수도 있고, 모터 전류와 전달계 모델로 필요한 입력을 구할 수도 있다. 감속비뿐 아니라 센서 위치, 마찰, 사용 가능한 명령 방식이 제어 구성을 결정한다. 그래서 감속비가 크다는 사실만으로 토크 제어 가능 여부를 단정하지 않는다. [관절 토크·전류 피드백의 구성](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-1-control-system-overview/) · [감속과 마찰의 영향](https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-9-actuation-gearing-and-friction/)
+
+<a id="motor-control"></a>
+### 전기 입력을 만드는 방식과 제어 목표
+
+**펄스 폭 변조**(pulse-width modulation, PWM)는 신호가 켜져 있는 시간의 비율을 바꾸는 방식이다. 모터 드라이버에서는 전력 스위칭에 이를 사용해 모터에 가하는 전기 입력을 조절할 수 있다. 한 주기 중 켜진 시간의 비율을 **듀티비**(duty cycle)라고 한다. [PWM과 듀티비, TI 참고서 67쪽](https://www.ti.com/lit/pdf/slyy211#page=67)
+
+**속도 제어**(velocity control)의 목표는 모터나 관절의 속도를 원하는 값에 맞추는 것이다. 예를 들어 목표 속도와 측정 속도의 차이로 필요한 전류를 정하고, 드라이버 내부에서는 전류 피드백과 PWM으로 전기 입력을 조절하는 구성을 생각할 수 있다. 이때 속도는 제어할 물리량이고, PWM은 입력을 만들어내는 수단이다. 전류·속도·위치 중 무엇을 명령하고 어떤 값을 측정하는지에 따라 제어 구성이 달라진다. [제어기·드라이버·내부 피드백의 관계](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-1-control-system-overview/)
 
 <a id="sensor-quality"></a>
 ### 센서 숫자를 사용할 때 확인할 조건
@@ -240,3 +249,21 @@ CoM은 질량 분포의 중심이고, CoP는 접촉 압력이 어디에 실리�
 **액션**(action)은 ROS 2에서 목표·피드백·결과와 취소를 다루는 장시간 작업 인터페이스다. [ROS 2 Actions 설계](https://design.ros2.org/articles/actions.html)
 
 다만 ‘완료’의 뜻은 정의한 작업에 따라 달라진다. 손가락을 목표 각도로 닫는 작업의 완료와 물체를 성공적으로 집는 작업의 완료는 서로 다른 조건이다. 명령이 처리되었다는 알림, 측정한 손의 상태, 물체를 보유했다는 판단을 구분하는 과정을 [적용 사례](platform_robot_walkthrough.md#grasp-case)에서 이어 읽을 수 있다.
+
+<a id="further-study"></a>
+## 필요할 때 더 깊게 읽고 확장할 주제
+
+현재 설명에서 더 나아갈지는 **풀고 싶은 질문이 생겼는가**를 기준으로 정하면 된다. 아래는 관련 개념을 묶은 선택 안내이며, 정해진 이수 순서나 작성 예정 목록은 아니다. 문서를 확장할 때도 필요한 질문을 골라 해당 개념에 설명·예시·근거를 덧붙일 수 있다.
+
+| 주제·현재 설명 범위 | 더 깊게 알아볼 질문 | 이어 읽을 자료 |
+|---|---|---|
+| **기구학·자코비안**: [관절 구성, 손의 움직임, 특이점](#geometry) | 자세에 따라 손을 움직이기 쉬운 방향이 어떻게 달라지는가? 이를 나타내는 조작성(manipulability)은 어떻게 계산하는가? | Modern Robotics [5.4 조작성](https://modernrobotics.northwestern.edu/nu-gm-book-resource/5-4-manipulability/) |
+| **구동·전달계**: [모터 전류, 관절 토크, 손끝 힘의 관계](#hardware) | 감속비·마찰·모터 관성이 관절의 응답에 얼마나 영향을 주는가? | Modern Robotics [8.9 구동·감속·마찰](https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-9-actuation-gearing-and-friction/) |
+| **센서 측정 품질**: [정확도·정밀도·분해능·불확실성](#sensor-quality) | 여러 측정값으로 힘이나 위치를 계산할 때 각 값의 불확실성을 어떻게 합치는가? | NIST [불확실성 성분의 결합](https://physics.nist.gov/cuu/Uncertainty/combination.html) |
+| **동작·궤적 계획**: [경로, 시간 계획, 구동 제약](#planning) | 주어진 경로를 토크 한계 안에서 얼마나 빠르게 실행할 수 있는가? | Modern Robotics [9.4 시간 최적화](https://modernrobotics.northwestern.edu/nu-gm-book-resource/9-4-time-optimal-time-scaling-part-1-of-3/) |
+| **접촉 제어**: [힘·임피던스·어드미턴스 제어의 목표](#control) | 물체를 얼마나 강하게 누르거나 외력에 얼마나 부드럽게 반응하게 할 것인가? 그 관계를 어떻게 식으로 표현하는가? | MIT [Manipulator Control](https://manipulation.mit.edu/force.html) |
+| **SLAM·상태 추정**: [전단·후단, 관측 대응, 위치·지도 추정](#estimation) | 잘못된 관측 대응과 누적 오차를 어떻게 다루며, 장소를 다시 보았을 때 지도와 위치를 어떻게 보정하는가? | [SLAM 개관 논문](https://arxiv.org/abs/1606.05830)의 데이터 연관·추정·루프 폐합 설명 |
+| **물체 추적**: [검출·데이터 연관·상태 갱신](#object-tracking) | 물체를 놓치는 오류와 다른 물체로 바꿔 따라가는 오류를 어떻게 구분하고 평가하는가? | [SORT](https://arxiv.org/html/1602.00763) §4의 평가 지표와 비교 |
+| **균형·전신 제어**: [접촉 조건, 유지 목표, 우선순위·제약](#contact) | 손·몸통·발의 목표가 충돌할 때 우선순위와 가중치를 쓰는 방법은 어떤 결과 차이를 만드는가? | [TALOS 전신 제어 비교 연구](https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2022.826491/full) |
+
+각 자료는 표의 질문에 해당하는 부분부터 읽으면 된다. 수식 유도·알고리즘 구현·제품별 설정은 실제 학습이나 적용에 필요한 깊이까지 선택한다.
