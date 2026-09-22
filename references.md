@@ -2,7 +2,7 @@
 
 [처음으로](README.md)
 
-2026-09-20 초안의 출처 목록에 2026-09-21 기초 설명 보강에 사용한 자료를 추가했다. 본문에는 해당 주장을 뒷받침하는 링크를 가까이 배치했다. 여기서는 어떤 목적으로 참고했는지와 해석의 범위를 기록한다. 전체 연결도는 아래 자료의 기능 관계를 학습 목적으로 종합한 작성자의 도식이며, 특정 제품의 아키텍처를 전사한 것이 아니다. 교재나 논문 전체의 검증을 완료했다는 뜻은 아니다.
+2026-09-20 초안의 출처 목록에 2026-09-22까지 기초 설명과 유지 목표·전신 제어 설명을 보강하는 데 사용한 자료를 추가했다. 본문에는 해당 주장을 뒷받침하는 링크를 가까이 배치했다. 여기서는 어떤 목적으로 참고했는지와 해석의 범위를 기록한다. 전체 연결도는 아래 자료의 기능 관계를 학습 목적으로 종합한 작성자의 도식이며, 특정 제품의 아키텍처를 전사한 것이 아니다. 교재나 논문 전체의 검증을 완료했다는 뜻은 아니다.
 
 ## 1. 자료의 출발점
 
@@ -23,7 +23,7 @@
 | 같은 교재, [8.3 Inverse dynamics](https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-3-newton-euler-inverse-dynamics/) | 운동과 필요한 힘·토크의 관계 | 고정 기반 개방 사슬 설명을 휴머노이드 전체에 그대로 적용하지 않음 |
 | 같은 교재, [9.4 Time scaling](https://modernrobotics.northwestern.edu/nu-gm-book-resource/9-4-time-optimal-time-scaling-part-1-of-3/), [10.1 Motion planning](https://modernrobotics.northwestern.edu/nu-gm-book-resource/10-1-overview-of-motion-planning/) | 경로·시간·실행 가능성 | 개별 알고리즘 우열을 결정하지 않음 |
 | 같은 교재, [11.1 Control](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-1-control-system-overview/), [11.5 Force control](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-5-force-control/) | 폐루프와 구동, 힘 피드백 | 모든 제품의 제어 구조를 고정하지 않음 |
-| 같은 교재, [11.4 Motion Control with Torque or Force Inputs](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-4-motion-control-with-torque-or-force-inputs-part-1-of-3/) | 위치·속도 오차, PD 제어, 구동 한계·모델 오차의 영향 | 실제 제어기 설정값이나 안정성 보장으로 사용하지 않음 |
+| 같은 교재, [11.4 Motion Control with Torque or Force Inputs](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-4-motion-control-with-torque-or-force-inputs-part-1-of-3/) | 고정 목표값 유지, 위치·속도 오차, PD 제어, 구동 한계·모델 오차의 영향 | 실제 제어기 설정값이나 안정성 보장으로 사용하지 않음 |
 | Tedrake, [Manipulator Control](https://manipulation.mit.edu/force.html) | 중력 보상, 접촉 시 위치·힘·임피던스 제어의 차이 | 직관과 입력·출력 관계에 사용; 특정 로봇의 제어 구조를 가정하지 않음 |
 | Lynch·Park, Modern Robotics [2017년 5월 사전 공개본 PDF](https://hades.mech.northwestern.edu/images/b/b2/MR-2up.pdf) | §11.6–11.7, 인쇄 쪽 433–445: hybrid·impedance·admittance | 입력·출력 관계 설명에 사용; 전체 수식 재현 없음 |
 | 같은 교재, [12.2.1 Friction](https://modernrobotics.northwestern.edu/nu-gm-book-resource/12-2-1-friction/), [12.2.3 Force closure](https://modernrobotics.northwestern.edu/nu-gm-book-resource/12-2-3-force-closure/) | 접촉의 모델 조건과 파지 | 실제 구동력·파지 성공 보장과 구분 |
@@ -39,6 +39,7 @@
 | Hartley 외, [Contact-aided InEKF](https://arxiv.org/abs/1904.09251) | 초록에 설명된 IMU·기구학·접촉 기반 상태 추정 | 특정 이족 연구 사례; 전체 휴머노이드에 대한 성능 보장 없음 |
 | Bewley 외, [SORT](https://arxiv.org/abs/1602.00763) | 초록의 검출·연관·필터 기반 물체 추적 구조 | 로봇 자체의 위치 추정과 구분하는 사례 |
 | Kuindersma 외, [Atlas 통합 연구](https://dspace.mit.edu/entities/publication/6cb6cad7-9288-419c-aa5a-cc44744f2e91) | 인지·계획·추정·제어 통합의 연구 사례 | 2016년 논문; 현대 모든 휴머노이드의 표준 구조라는 의미가 아님 |
+| [Benchmarking Whole-Body Controllers on the TALOS Humanoid Robot](https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2022.826491/full) | §1.2·3.1·3.2의 동시 목표, 엄격한 우선순위와 가중치·제약의 구분 | 2022년 시뮬레이션 비교 연구; 본문의 집기·대기 상황은 원리를 연결한 설명용 예이며 논문의 실험 결과가 아님 |
 | [Humanoid-Gym](https://arxiv.org/abs/2404.05695) | 2024년 논문 초록의 학습 기반 보행·sim-to-real 사례 | 적용 사례로만 사용; 상세 재현·비교 실험 미수행 |
 | [ASAP](https://arxiv.org/abs/2502.01143) | 2025년 논문 초록의 시뮬레이션·실제 동역학 차이 | 최신 기술 전수 조사나 일반 성능 보장이 아님 |
 | NIST, [Basic definitions of uncertainty](https://physics.nist.gov/cuu/Uncertainty/glossary.html) | 측정 불확실성과 값의 퍼짐, 표준편차·구간 표현 | 특정 센서의 수치 평가가 아닌 용어 설명 |
