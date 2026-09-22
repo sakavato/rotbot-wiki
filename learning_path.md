@@ -38,7 +38,7 @@
 
 구동·제어 항목에는 피드백(feedback)·피드포워드(feedforward), 구동 회로와 서보 모터(servo motor)가 있다. 로봇의 적용 예를 통해 관절에 맞는 모터를 선택하는 문제로 이어진다.
 
-**전체 동작과의 연결:** 계획이나 제어가 명령한 값은 구동계를 거쳐 실제 힘과 움직임이 된다. 이 날의 내용을 통해 모터·전달계의 특성이 어떤 동작을 수행할 수 있는지와 연결된다는 점을 살펴볼 수 있다. 회로를 구동하는 방식과 제어하려는 물리량의 구분은 [교육 표현 검토](curriculum_coverage_and_gaps.md#corrections)에서 보충한다.
+**전체 동작과의 연결:** 계획이나 제어가 명령한 값은 구동계를 거쳐 실제 힘과 움직임이 된다. 이 날의 내용을 통해 모터·전달계의 특성이 어떤 동작을 수행할 수 있는지와 연결된다는 점을 살펴볼 수 있다. 회로를 구동하는 방식과 제어하려는 물리량의 구분은 [교육 메모의 정정과 보충](curriculum_coverage_and_gaps.md#corrections)에서 보충한다.
 
 **읽을 곳:** 오버뷰 [3절: 힘·구동 능력](robotics_system_overview.md#vertical), [4절: 피드백](robotics_system_overview.md#closed-loop), 개념 문서의 [구동과 센싱](concepts.md#hardware).
 
@@ -51,7 +51,7 @@
 
 **전체 동작과의 연결:** 1일차의 햅틱스가 감각과 피드백의 관점을 포함했다면, 이 날의 메모는 접촉을 측정하는 장치와 측정 품질을 더 구체적으로 다룬다. 물체를 잡았는지, 미끄러지는지 판단하려면 어떤 값이 측정되며 그 값이 언제 유효한지 알아야 한다.
 
-**읽을 곳:** 오버뷰 [5절: 접촉과 파지](robotics_system_overview.md#contact), 개념 문서의 [센서 범위·분해능·불확실성](concepts.md#hardware), [관측 현상 해석 예](platform_robot_walkthrough.md).
+**읽을 곳:** 오버뷰 [5절: 접촉과 파지](robotics_system_overview.md#contact), 개념 문서의 [센서 범위·분해능·불확실성](concepts.md#hardware), [적용 사례: 손은 닫혔는데 왜 물체를 놓쳤을까?](platform_robot_walkthrough.md).
 
 <a id="day-4"></a>
 ## 4일차 — 동작 계획과 제어
@@ -81,7 +81,7 @@
 
 **전체 동작과의 연결:** 1일차에도 등장한 위치·지도 추정 문제를 센서·기하·확률·최적화와 개별 방법까지 연결해 살펴볼 수 있다. 물체 추적이 대상 물체의 상태를 다룬다면, 여기서는 로봇·카메라 자신의 움직임과 환경 지도의 관계에 주목한다.
 
-**읽을 곳:** 오버뷰 [1절: 위치·상태 파악](robotics_system_overview.md#estimation), 개념 문서의 [추정](concepts.md#estimation)·[좌표계와 시각](concepts.md#interfaces), [관측 현상 해석 예](platform_robot_walkthrough.md).
+**읽을 곳:** 오버뷰 [1절: 위치·상태 파악](robotics_system_overview.md#estimation), 개념 문서의 [추정](concepts.md#estimation)·[좌표계와 시각](concepts.md#interfaces), [적용 사례: 손은 닫혔는데 왜 물체를 놓쳤을까?](platform_robot_walkthrough.md).
 
 ## 이 안내와 나머지 문서를 함께 읽는 방법
 
@@ -89,4 +89,4 @@
 
 용어의 뜻을 찾아볼 때는 [분야별 개념](concepts.md)을 사용한다. 이 문서는 전체 동작을 이해하는 데 필요한 개념을 선택해 보충한다. 감각 생리의 세부, 모터·촉각 센서의 구현, 개별 추적·SLAM 알고리즘의 계보 등은 구체적인 학습 필요가 생길 때 선택해서 살펴본다. 여러 날에 등장한 용어는 공통 설명으로 연결하고, 각 일자에서는 그 용어가 어떤 주제와 함께 다뤄졌는지 설명한다.
 
-현재 오버뷰의 휴머노이드 집기 예, 유지 목표, 균형·전신 제어를 잇는 설명은 교육 메모를 이해하기 위해 재구성·보충한 내용이다. 원본 표현의 교정과 보완 범위는 [교육 검토 기록](curriculum_coverage_and_gaps.md)에, 기술적 근거는 [출처 목록](references.md)에 정리했다.
+현재 오버뷰의 휴머노이드 집기 예, 유지 목표, 균형·전신 제어를 잇는 설명은 교육 메모를 이해하기 위해 재구성·보충한 내용이다. 원본 표현의 교정과 보완 범위는 [교육 메모의 정정과 보충](curriculum_coverage_and_gaps.md)에, 기술적 근거는 [출처 목록](references.md)에 정리했다.

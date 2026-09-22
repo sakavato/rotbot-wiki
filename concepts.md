@@ -2,7 +2,22 @@
 
 [중심 설명으로](robotics_system_overview.md) · [처음으로](README.md)
 
-중심 글에서 낯선 용어를 만났을 때 찾아보는 문서다. 물리적 직관과 전체 흐름은 [중심 본문](robotics_system_overview.md)에서 설명하며, 여기서는 필요한 분야만 읽으면 된다. 주요 용어는 한글(영문, 약어)로 병기하며, 번역이 다양한 용어는 영문을 기준으로 확인한다. [내용 선정 기준](README.md#scope)에 따라 전체 동작과 기능 간 관계를 이해하는 데 필요한 개념을 다룬다.
+[오버뷰](robotics_system_overview.md)에서 전체 흐름을 읽은 뒤, 개념 사이의 차이나 작동 이유가 더 궁금할 때 찾아보는 문서다. 같은 집기 상황을 사용해 **무엇을 표현하는 개념인지, 왜 필요한지, 다른 기능에 무엇을 제공하는지** 설명한다. 주요 용어는 한글(영문, 약어)로 병기한다.
+
+아래에서 궁금한 질문을 골라 읽으면 된다. 이 문서의 절 번호는 분야를 구분하며 오버뷰의 절 번호와 다르다. [내용 선정 기준](README.md#scope)에 따라 전체 이해에 필요한 개념을 다룬다.
+
+| 궁금한 점 | 이 문서에서 읽을 곳 | 오버뷰·도식과의 연결 |
+|---|---|---|
+| 손의 위치와 관절각은 어떻게 연결되는가? | [1. 몸의 표현과 기구학](#geometry) | [2절: 동작·접촉 계획](robotics_system_overview.md#geometry) |
+| 가능한 움직임에도 힘의 한계가 있는 이유는? | [1절의 동역학 보충](#dynamics) | [3절: 힘·구동 능력](robotics_system_overview.md#vertical) |
+| 센서값에서 현재 상태를 어떻게 알아내는가? | [2. 측정과 추정](#estimation) | [1절: 센싱 → 인지·상태 추정](robotics_system_overview.md#estimation) |
+| 과업과 유지 목표를 어떤 움직임으로 바꾸는가? | [3. 계획](#planning) | [7절: 작업 관리 → 계획 → 제어](robotics_system_overview.md#integration) |
+| 움직이거나 멈춰 있을 때 무엇을 보정하는가? | [4. 제어](#control) | [4절: 반복 피드백](robotics_system_overview.md#closed-loop) |
+| 물체를 잡으면서 서 있으려면 무엇이 필요한가? | [5. 접촉·균형·전신 제어](#contact) | [5절: 파지](robotics_system_overview.md#contact), [6절: 전신 균형](robotics_system_overview.md#humanoid) |
+| 명령·측정값을 그대로 믿을 수 없는 이유는? | [6. 구동과 센싱](#hardware) | [3절: 구동](robotics_system_overview.md#vertical), [5절: 접촉 측정](robotics_system_overview.md#contact) |
+| 같은 숫자가 다른 뜻으로 쓰이지 않으려면? | [7. 정보의 기준과 시각](#interfaces) | [1절: 좌표계](robotics_system_overview.md#estimation), [4절: 지연](robotics_system_overview.md#closed-loop) |
+
+개념을 읽은 뒤에는 [집기 작업에 적용하는 사례](platform_robot_walkthrough.md)에서 목표·명령·관측·실제 결과를 구분해 볼 수 있다.
 
 <a id="geometry"></a>
 ## 1. 몸의 구조와 움직임을 표현하는 언어
@@ -11,17 +26,23 @@
 
 | 키워드 | 의미 | 연결해서 읽을 것 |
 |---|---|---|
-| 구성(configuration) / 구성 공간(configuration space, C-space) | 로봇의 구성을 표현한 변수와 가능한 구성의 공간 | 관절 한계·충돌 제약, 휴머노이드의 떠 있는 몸체 |
+| 구성(configuration) / 구성 공간(configuration space, C-space) | 몸의 배치를 나타내는 변수의 조합 / 그 조합들이 이루는 공간 | 몸 전체의 충돌 검사, 관절 한계, [몸체의 위치·방향](#floating-base) |
 | 관절 공간(joint space) | 관절 변수로 표현한 공간 | 관절 상태·명령과 기구학 |
 | 작업 공간(task space) | 수행하려는 작업을 자연스럽게 표현하는 공간 | 손의 위치만 요구하는지, 방향까지 요구하는지 |
 | 도달 가능 작업 영역(workspace) | 로봇 말단이 도달할 수 있는 위치·방향의 범위 | 링크 구조·관절 범위와 작업 요구 |
-| 위치·방향을 합친 배치(pose) / 특수 유클리드 군(special Euclidean group, SE(3)) | 위치와 방향을 함께 표현한 강체의 배치 / 3차원 강체 변환의 공간 | 기준 좌표계와 시간 |
+| 위치·방향을 합친 배치(pose) | 물체나 손이 어디에 있고 어느 쪽을 향하는지 함께 나타낸 것 | 같은 위치에서도 손을 위에서 내릴지 옆으로 넣을지 구분 |
+
+예를 들어 바닥에 고정된 평면의 두 관절 팔에서 `q = [30°, 60°]`는 두 관절각으로 표현한 구성 한 개다. 같은 손의 위치는 기준 좌표계의 `(x, y)`로 표현할 수 있다. **관절각은 몸의 배치**, **손 좌표는 작업에서 관심 있는 위치**를 나타낸다. 손의 목표가 정해졌어도 팔꿈치가 선반에 부딪힐 수 있으므로 몸 전체의 구성을 함께 확인해야 한다.
 
 Task space와 workspace는 모두 ‘작업 공간’으로 번역되기도 한다. 둘을 같은 뜻으로 쓰면 “작업에서 원하는 것”과 “로봇이 도달할 수 있는 것”을 혼동한다. [Modern Robotics 2.5](https://modernrobotics.northwestern.edu/nu-gm-book-resource/2-5-task-space-and-workspace/)
 
 **정기구학**(forward kinematics, FK)은 주어진 관절 구성에서 말단의 위치·방향을 구한다. **역기구학**(inverse kinematics, IK)은 목표 말단 배치를 만족하는 관절 구성을 찾는다. IK의 해는 없거나 여럿일 수 있다. 해를 하나 얻었다고 그 자세까지 충돌 없이 이동하는 경로까지 얻은 것은 아니다. [역기구학](https://modernrobotics.northwestern.edu/nu-gm-book-resource/inverse-kinematics-of-open-chains/)
 
-**자코비안**(Jacobian)은 현재 구성에서 관절 속도와 말단의 선속도(linear velocity)·각속도(angular velocity)를 연결한다. 힘(force)과 관절 토크(joint torque)의 관계에도 등장한다. **특이점**(singularity)은 독립적으로 만들어낼 수 있는 말단의 순간 운동 방향이 줄어드는 구성이다. 행렬 표현에서는 이를 자코비안의 랭크 감소라고 한다. 따라서 목표 위치가 도달 범위에 있다는 사실만으로 원하는 방향의 순간 운동까지 자유롭게 만들 수 있다고 볼 수 없다. [Jacobian](https://modernrobotics.northwestern.edu/nu-gm-book-resource/5-1-1-space-jacobian/), [특이점](https://modernrobotics.northwestern.edu/nu-gm-book-resource/5-3-singularities/)
+### 지금 자세에서 어느 방향으로 움직일 수 있는가?
+
+**자코비안**(Jacobian)은 현재 구성에서 관절 속도를 손의 선속도(linear velocity)·각속도(angular velocity)와 연결한다. 같은 속도로 어깨를 돌려도 팔을 접었을 때와 길게 뻗었을 때 손의 움직임이 달라진다. 따라서 이 관계는 현재 자세에 따라 바뀐다. 제어에서는 손을 원하는 방향·속도로 움직이기 위한 관절 속도를 구할 때 사용하며, 손의 힘과 관절 토크를 연결할 때도 등장한다. [Jacobian](https://modernrobotics.northwestern.edu/nu-gm-book-resource/5-1-1-space-jacobian/)
+
+**특이점**(singularity)은 만들어낼 수 있는 손의 독립적인 순간 운동 방향이 평소보다 줄어드는 구성이다. 평면의 두 관절 팔을 일자로 완전히 뻗으면, 그 순간 각 관절의 회전이 만드는 손의 속도는 팔에 직각인 방향뿐이다. 팔 길이 방향의 속도를 바로 만들 수 없고, 굽혀서 자세를 바꾸어야 한다. 이는 안쪽 위치에 나중에 도달할 수 있는지와 별개의 문제다. **도달 가능한 위치**와 **현재 자세에서 만들 수 있는 순간 움직임**을 구분하는 이유다. [펴진 팔의 특이점 예](https://modernrobotics.northwestern.edu/nu-gm-book-resource/5-3-singularities/)
 
 <a id="dynamics"></a>
 ### 기구학에서 동역학으로
@@ -37,6 +58,8 @@ Task space와 workspace는 모두 ‘작업 공간’으로 번역되기도 한�
 
 **측정값**(measurement)과 **상태 추정값**(state estimate)은 구분한다. 상태 추정값은 측정·모델·이전 정보로 구한 상태다. 로봇의 상태와 물체의 상태도 구분해야 한다. 예를 들어 카메라에 물체가 잠깐 가려져도 이전 위치·속도와 움직임 모델로 현재 위치를 예측할 수 있다. 하지만 그 예측을 새로 측정한 값처럼 취급해서는 안 되며, 다시 보였을 때 관측과 비교해 보정해야 한다. 칼만 필터(Kalman filter)는 예측과 측정의 불확실성을 고려해 상태를 갱신하는 대표적인 방법이다. 무엇을 상태 변수로 두는지에 따라 같은 도구로도 다른 문제를 푼다.
 
+### 무엇을 추정하는지 먼저 구분한다
+
 | 키워드 | 무엇을 알고 싶은가? | 연결 |
 |---|---|---|
 | 위치 추정(localization) | 기준 지도·좌표계에서 로봇이 어디에 있는가? | 계획의 시작 상태와 목표 좌표 |
@@ -46,7 +69,9 @@ Task space와 workspace는 모두 ‘작업 공간’으로 번역되기도 한�
 | 후단(back-end) | 관측 관계와 모델을 함께 만족하는 상태를 어떻게 추정할 것인가? | 필터링·최적화, 추정 불확실성 |
 | 루프 폐합(loop closure) | 이전에 본 장소와 지금의 관측을 어떻게 연결하는가? | 누적 오차의 보정과 지도 일관성 |
 
-필터링(filtering)·최적화(optimization)는 추정 방법의 구분이고, 위치 추정(localization)·지도 작성(mapping)은 풀려는 문제의 구분이다. [SLAM 개관 논문](https://arxiv.org/abs/1606.05830)
+예를 들어 카메라가 벽의 무늬를 다시 보았을 때, 전단은 이전 영상의 어떤 특징과 대응하는지 찾고 이동 추정에 쓸 정보를 만든다. 후단은 이런 관측 관계를 모아 로봇의 경로와 지도가 서로 맞도록 상태를 갱신한다. 잘못된 대응이나 측정 오차를 다루는 방식에 따라 결과가 달라지므로 영상이 들어왔다는 사실만으로 정확한 위치를 얻었다고 볼 수 없다.
+
+필터링(filtering)·최적화(optimization)는 추정에 사용하는 방법이고, 위치 추정(localization)·지도 작성(mapping)은 풀려는 문제다. 필터는 위치 추정에만, 최적화는 지도 작성에만 쓰인다고 나누지 않는다. [SLAM 개관 논문](https://arxiv.org/abs/1606.05830)
 
 **물체 추적**(object tracking)은 관측 사이에서 물체의 상태와 동일성을 이어가는 문제다. SORT(Simple Online and Realtime Tracking)는 검출(detection) 결과, 칼만 필터, 데이터 연관(data association)을 결합한 사례다. 여기서 얻은 물체 추적 결과와 로봇 자신의 pose는 다른 정보이며, 제어에 쓰려면 출력의 좌표·차원·시각을 확인해야 한다. [SORT 원 논문](https://arxiv.org/abs/1602.00763)
 
@@ -55,43 +80,100 @@ Task space와 workspace는 모두 ‘작업 공간’으로 번역되기도 한�
 <a id="planning"></a>
 ## 3. 목표에서 실행할 움직임으로
 
-**작업 계획**(task planning)은 무엇을 어떤 순서로 할지, **동작 계획**(motion planning)은 몸을 어떻게 움직일지를 묻는다. 예를 들어 ‘손을 접근시킨다 → 잡는다 → 들어 올린다’는 작업의 순서이고, 접근하는 동안 팔과 손이 선반을 피하도록 구체적인 움직임을 정하는 것은 동작 계획이다.
+### 과업과 계속 유지할 조건을 함께 전달한다
 
-**경로**(path)는 지나갈 구성의 연결, **궤적**(trajectory)은 시간에 따른 움직임이다. A*(A-star) 같은 그래프 탐색(graph search), RRT(rapidly-exploring random tree) 계열의 샘플링(sampling), 최적화는 경로·동작을 구하는 서로 다른 접근으로 읽는다. 탐색 결과를 반드시 특정 최적화기에 넣어야 한다는 고정 순서는 없다. [Motion planning 개요](https://modernrobotics.northwestern.edu/nu-gm-book-resource/10-1-overview-of-motion-planning/)
+**작업 계획**(task planning)은 무엇을 어떤 순서로 할지 정한다. **작업 실행 관리**(task execution)는 관측한 결과로 다음 단계에 갈지, 현재 목표를 유지할지, 다시 시도할지 판단한다. **동작 계획**(motion planning)은 그 목표를 달성할 자세·경로·시간·접촉 조건을 구체화한다.
+
+예를 들어 ‘접근 → 잡기 → 들기’는 작업 단계의 순서다. 손이 선반을 피하면서 물체에 접근하도록 움직임을 정하는 일은 동작 계획이다. 여기에 **서기·균형 유지라는 목표도 함께 유효하다.** 집기 요청이 없을 때는 서기 목표가 남고, 집기 요청이 들어오면 손의 목표가 더해진다. 이러한 목표를 몸 전체에서 조정하는 방법은 [전신 제어](#whole-body-control)로 이어진다. [오버뷰의 작업 진행 예](robotics_system_overview.md#integration)
+
+### 같은 길을 지나도 실행할 움직임은 달라진다
+
+**경로**(path)는 지나갈 구성의 연결, **궤적**(trajectory)은 시간에 따른 움직임이다. 선반 옆을 돌아가는 같은 경로라도 1초에 이동할지 3초에 이동할지에 따라 필요한 속도·가속도가 달라진다. 그러므로 충돌 없는 경로를 얻은 뒤에도 시간과 구동 한계를 함께 검토해야 한다. A*(A-star) 같은 그래프 탐색(graph search), RRT(rapidly-exploring random tree) 계열의 샘플링(sampling), 최적화는 경로·동작을 구하는 서로 다른 접근으로 읽는다. 탐색 결과를 반드시 특정 최적화기에 넣어야 한다는 고정 순서는 없다. [Motion planning 개요](https://modernrobotics.northwestern.edu/nu-gm-book-resource/10-1-overview-of-motion-planning/)
 
 **시간 매개변수화**(time parameterization)는 경로를 어떤 시간 진행으로 실행할지 정하는 문제다. 시간 최적 경로 매개변수화(time-optimal path parameterization, TOPP)는 이 맥락에 놓인다. 단순히 곡선을 매끄럽게 만드는 보간(interpolation)과, 동역학·구동 제약 아래에서 실행 시간을 정하는 문제는 다르다. [Time-optimal time scaling](https://modernrobotics.northwestern.edu/nu-gm-book-resource/9-4-time-optimal-time-scaling-part-1-of-3/)
 
-**최적 제어 문제**(optimal control problem, OCP)는 풀려는 문제, **비선형 계획법**(nonlinear programming, NLP)은 비선형 최적화 문제의 형식, **직접 콜로케이션**(direct collocation)은 연속시간 동역학을 이산 제약으로 다루는 수치적 접근이다. **모델 예측 제어**(model predictive control, MPC)는 현재 상태에서 유한 구간 문제를 반복해 풀고 일부 입력을 적용하는 제어 방식이다. 서로 같은 종류의 알고리즘 이름이 아니며, 계획과 제어의 경계에 함께 등장할 수 있다. [Trajectory optimization과 MPC](https://underactuated.mit.edu/trajopt.html)
+### 선택 보충: 최적화와 MPC는 어떤 관계인가?
+
+최적화(optimization)는 후보 중 무엇을 더 좋게 볼지 정한 기준과, 반드시 만족해야 할 조건을 함께 사용해 답을 구하는 방법이다. 예를 들어 ‘이동 시간을 줄이되 충돌과 토크 한계를 피하는 움직임’을 찾는 문제를 생각할 수 있다.
+
+**모델 예측 제어**(model predictive control, MPC)는 현재 상태에서 앞으로 일정 구간의 움직임과 입력을 계산하고, 그중 처음 일부만 적용한 뒤 새 상태로 다시 계산한다. 관측이 다음 계산의 출발점이 되므로 계획 계산을 피드백에 사용하는 방식이다. ‘미리 한 번 계산한 궤적을 끝까지 실행한다’는 구성과 구분하면 된다.
+
+논문에서 아래 용어를 만나면 역할을 구분하는 정도로 읽고, 수치적 유도는 필요할 때 살펴본다.
+
+| 용어 | 구분할 역할 |
+|---|---|
+| 최적 제어 문제(optimal control problem, OCP) | 운동의 변화와 제약을 지키면서 어떤 상태·입력을 선택할지 정하는 문제 |
+| 비선형 계획법(nonlinear programming, NLP) | 목적이나 제약에 비선형 관계를 포함하는 최적화 문제를 다루는 분야. OCP를 계산 가능한 형태로 바꿀 때 등장할 수 있다. |
+| 직접 콜로케이션(direct collocation) | 연속적인 운동을 구간별로 표현하고 정해진 지점에서 동역학 관계를 만족시키도록 최적화 문제를 구성하는 수치적 방법 |
+
+이 이름들은 로봇에서 반드시 순서대로 실행하는 단계가 아니다. [궤적 최적화·직접 콜로케이션·MPC](https://underactuated.mit.edu/trajopt.html)
 
 <a id="control"></a>
 ## 4. 기준과 실제의 차이를 다룬다
 
 **피드백**(feedback)은 관측된 결과를 다음 입력에 반영하고, **피드포워드**(feedforward)는 목표와 모델 등을 이용해 필요한 입력을 미리 구성한다. 두 방법을 함께 사용할 수 있다. 목표가 위치인지, 속도인지, 힘인지에 따라 비교하는 값과 하위 명령이 달라진다. 예를 들어 물체 무게의 모델로 중력을 버티는 입력을 미리 더하고, 실제 관절각과 목표각의 차이를 피드백으로 줄일 수 있다. 위치 제어(position control)·힘 제어(force control)·상호작용 제어(interaction control)는 연결된 기능이지만 동의어는 아니다. [제어 개요](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-1-control-system-overview/)
 
+### 목표가 그대로여도 제어는 반복된다
+
+목표 각도 60°에 도착한 관절을 그대로 유지하려면 목표 각도와 실제 각도, 목표 속도 0과 실제 속도를 계속 비교해야 한다. 외부에서 밀리거나 하중이 바뀌면 다시 보정할 수 있어야 하기 때문이다. 이런 **고정 목표값 제어**(setpoint control)는 새 과업이 없는 대기 중에도 유효하다. [오버뷰의 대기 중 제어](robotics_system_overview.md#closed-loop)
+
 **비례·미분 제어**(proportional-derivative control, PD)는 위치 오차와 속도 오차를 함께 사용하는 방법이다. 정지한 목표로 이동할 때 위치 오차에 따른 항은 목표로 되돌리려는 역할을 하고, 속도에 따른 항은 움직임을 가라앉히는 **감쇠**(damping) 역할을 할 수 있다. 감쇠가 부족하면 목표를 지나쳤다가 되돌아오는 진동이 생길 수 있다. 반대로 오차를 줄이려는 반응을 무조건 크게 해도 구동 한계·지연·잡음 때문에 문제가 생길 수 있다. [PD 제어와 적용 조건](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-4-motion-control-with-torque-or-force-inputs-part-1-of-3/)
 
-**힘 제어**(force control)는 환경에 가할 힘·토크를 다룬다. 말단의 힘과 관절 토크 사이에는 기구학적 관계가 있다. 힘 센서 피드백을 사용하는 구성과 사용하지 않는 구성을 구분한다. [힘 제어](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-5-force-control/)
+### 접촉할 때는 무엇을 목표로 삼는가?
 
-**임피던스 제어**(impedance control)는 운동의 변화에 대한 힘의 응답을, **어드미턴스 제어**(admittance control)는 가해진 힘에 대한 운동의 응답을 구성하는 관점으로 읽으면 된다. 예를 들어 임피던스는 손이 목표에서 밀렸을 때 스프링처럼 되미는 힘을 만드는 직관으로, 어드미턴스는 측정한 외력에 따라 목표 위치·속도를 바꾸어 손이 물러나게 하는 직관으로 시작할 수 있다. 가상 질량(mass)·스프링(spring)·감쇠 같은 관계를 구현할 때 어떤 신호를 입력받고 무엇을 명령하는지가 중요하다. **혼합 운동·힘 제어**(hybrid motion–force control)는 서로 다른 방향의 운동·힘 목표를 구분해 다룬다. 모두 “힘을 일정하게 만든다”로 합치지 않는다. [Modern Robotics 교재 11.6–11.7](https://hades.mech.northwestern.edu/images/b/b2/MR-2up.pdf)
+손이 빈 공간을 이동할 때에는 위치가 중요하지만 물체에 닿은 뒤에는 얼마나 세게 누르는지도 중요해진다. **힘 제어**(force control)는 환경에 가하는 힘·토크를 목표에 맞추려는 제어다. 예를 들어 접촉 후 목표 힘이 5 N이고 측정값이 3 N이라면 힘 오차는 2 N이다. 이 차이를 줄이도록 입력을 조정하는 구성을 생각할 수 있다. 수치는 원리 설명용이다.
+
+이때 5 N을 관절 모터에 그대로 명령하는 것은 아니다. 말단의 힘과 관절 토크 사이의 기구학적 관계, 몸의 무게와 구동 조건을 사용해야 한다. 힘 센서의 측정값으로 보정하는 구성도 있고 모델로 필요한 입력을 구하는 구성도 있다. [힘 목표·관절 토크·센서 피드백의 관계](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-5-force-control/)
+
+접촉 중 외력에 어떻게 반응할지를 정하는 방법도 있다. 아래 예들은 입력과 목표의 관계를 이해하기 위한 것으로, 실제 제어 구성은 구동 방식과 센싱에 따라 달라진다.
+
+| 방법 | 정하려는 관계 | 직관적인 예 |
+|---|---|---|
+| **임피던스 제어**(impedance control) | 기준 움직임에서 벗어난 정도와 속도 등에 대해 어떤 힘으로 반응할지 정한다. | 손이 밀렸을 때 스프링처럼 되미는 힘과 흔들림을 가라앉히는 반응을 구성한다. |
+| **어드미턴스 제어**(admittance control) | 측정한 외력에 대해 목표 위치·속도 등 움직임이 어떻게 바뀔지 정한다. | 손에 외력이 가해지면 목표 움직임을 바꾸어 손이 물러나게 한다. |
+| **혼합 운동·힘 제어**(hybrid motion–force control) | 방향에 따라 운동 목표와 힘 목표를 나누어 다룬다. | 평평한 면을 닦으면서 면을 따라 이동하고, 면에 수직인 방향으로는 누르는 힘을 조절한다. |
+
+스프링에 더해 가상 질량과 감쇠의 관계를 구성할 수도 있다. 이 방법을 읽을 때에는 **어떤 값을 관측하고, 어떤 움직임이나 힘을 목표로 만드는지** 연결하면 된다. [방향별 운동·힘 제어 예](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-6-hybrid-motion-force-control/) · [임피던스·어드미턴스의 교재 설명](https://hades.mech.northwestern.edu/images/b/b2/MR-2up.pdf)
 
 <a id="contact"></a>
 ## 5. 접촉·균형·전신 움직임
 
 **접촉**(contact)은 장애물에 부딪히는 사건만을 뜻하지 않는다. 발의 지지와 손의 파지(grasping)는 작업을 가능하게 하는 접촉이다. **접촉 모드**(contact mode)는 어느 부위가 어떤 방식으로 접촉하는지의 구분이다. 접촉 전환은 연속적으로 움직이던 시스템의 제약을 바꿀 수 있다. [접촉과 hybrid dynamics](https://underactuated.mit.edu/contact.html)
 
-**마찰 원뿔**(friction cone)은 단순한 Coulomb 모델에서 접촉이 미끄러지지 않도록 전달할 수 있는 힘의 범위를 표현한다. **렌치**(wrench)는 힘과 모멘트(moment)를 함께 나타낸다. **힘 폐쇄**(force closure)는 주어진 접촉·마찰 모델 아래에서 임의 방향의 외부 wrench에 저항할 수 있는 파지의 성질이다. 실제 구동 한계까지 자동으로 보장하지 않는다. [마찰과 접촉력](https://modernrobotics.northwestern.edu/nu-gm-book-resource/12-2-1-friction/), [Force closure](https://modernrobotics.northwestern.edu/nu-gm-book-resource/12-2-3-force-closure/)
+<a id="floating-base"></a>
+### 관절각 외에 몸 전체의 배치가 필요한 이유
+
+바닥에 고정된 로봇 팔은 고정된 받침을 기준으로 관절각을 해석할 수 있다. 휴머노이드는 같은 관절각을 유지한 채 몸 전체가 기울거나 옮겨질 수 있다. 이런 몸을 모델링할 때 쓰는 **부유 기저**(floating base)는 몸체가 세계에 고정되어 있지 않다는 뜻이다. 여기서 ‘부유’는 실제로 공중에 떠 있다는 뜻은 아니다.
+
+3차원 모델에서는 기준 몸체의 위치·방향에 해당하는 6자유도와 관절 구성을 함께 표현한다. 발이 바닥에 닿으면 접촉이 움직임에 조건을 더하고 힘을 제공한다. 따라서 상태 추정에는 몸체의 배치가, 계획·제어에는 어느 발이 어떻게 지지하고 있는지가 필요하다. [부유 기저와 접촉 제약](https://underactuated.mit.edu/contact.html)
+
+### 닿아 있다는 것과 미끄러지지 않는 것은 다르다
+
+**마찰 원뿔**(friction cone)은 단순한 쿨롱 마찰 모델(Coulomb friction model)에서 정지 접촉이 전달할 수 있는 힘의 범위를 나타낸다. 접촉면을 누르는 힘이 있어야 접촉면을 따라 미끄러지려는 힘을 버틸 수 있으며, 그 한계는 마찰계수에 따라 달라진다.
+
+설명용으로 마찰계수가 0.5이고 면을 누르는 힘이 10 N이면, 이 모델에서 미끄럼 없이 버틸 수 있는 접선 방향 힘의 크기는 최대 5 N이다. 손가락으로 물체를 옆에서 집는 경우, 물체를 누르는 힘과 중력에 의한 미끄럼을 버티는 힘을 함께 생각해야 하는 이유다. 계획·제어가 요구한 접촉력이 이 범위에서 가능한지 확인해야 한다. [마찰계수와 전달 가능한 접촉력](https://modernrobotics.northwestern.edu/nu-gm-book-resource/12-2-1-friction/)
+
+힘과 회전 효과인 모멘트(moment)를 함께 나타낸 것을 **렌치**(wrench)라고 한다. 파지 문헌의 **힘 폐쇄**(force closure)는 접촉·마찰 모델 안에서 임의 방향의 외부 렌치에 저항할 수 있는 접촉 배치의 성질이다. 실제로 얼마나 무거운 물체를 들 수 있는지는 구동 한계까지 따로 검토해야 한다. [Force closure의 모델 조건](https://modernrobotics.northwestern.edu/nu-gm-book-resource/12-2-3-force-closure/)
+
+### 몸의 무게가 놓인 곳과 바닥이 받치는 곳
 
 | 키워드 | 첫 이해 | 함께 확인할 조건 |
 |---|---|---|
-| 질량중심(center of mass, CoM) | 몸 전체 질량 분포를 대표하는 질량중심 | 자세·하중 변화 |
+| 질량중심(center of mass, CoM) | 각 부분의 질량을 가중치로 평균한 위치. 몸의 질량이 어디에 분포하는지 요약한다. | 자세·하중 변화 |
 | 압력중심(center of pressure, CoP) | 접촉면 압력의 작용 위치를 요약한 점 | 접촉면과 힘의 유효성 |
 | 영 모멘트 점(zero moment point, ZMP) | 선택한 평면에서 접촉 wrench의 수평 모멘트가 0이 되는 점 | 평면·접촉·동역학 모델의 가정 |
-| 질량중심 기반 동역학(centroidal dynamics) | 질량중심과 그 주위 운동량에 집중한 동역학 | 관절 수준 제약을 어떻게 추가할지 |
 | 발디딤 계획(footstep planning) | 발을 언제 어디에 놓을지 정하는 문제 | 도달 범위·지형·몸의 움직임 |
 
 CoM은 질량 분포의 중심이고, CoP는 접촉 압력이 어디에 실리는지를 나타내므로 서로 다른 점이다. 예를 들어 왼발보다 오른발에 더 큰 수직 힘이 실리면, 양발의 압력을 합쳐 본 CoP는 오른발 쪽으로 이동한다. 몸이 움직일 때 가속도와 회전의 영향으로 CoP가 CoM의 수직 아래에 놓이지 않을 수 있다. ZMP는 접촉력과 운동의 관계를 모멘트 조건으로 표현할 때 쓰며, 평평한 지면의 적절한 접촉 조건에서는 CoP와 일치한다. 특정 점 하나가 정해진 범위 안에 있다는 사실만으로 모든 동작의 실행 가능성을 보장하지 않는다.
 
-**전신 제어**(whole-body control, WBC)는 손·몸통·발의 목표와 관절·접촉 제약을 함께 고려한다. 발이 미끄러지지 않으면서 손도 목표를 따라야 하는 이유는 [본문의 균형 설명](robotics_system_overview.md#humanoid)에서 이어 볼 수 있다.
+<a id="whole-body-control"></a>
+### 서기와 집기를 함께 만족시키는 전신 제어
+
+**전신 제어**(whole-body control, WBC)는 손·몸통·발의 목표와 관절·접촉 제약을 함께 고려해 몸 전체의 입력을 정한다. 손을 앞으로 뻗는 동안 몸통과 다리의 자세가 바뀌어도 서기·균형 유지 목표는 계속 유효할 수 있다. ‘서기를 먼저 끝내고 손을 움직인다’는 단계 구분으로 이해하면 이 동시성이 사라진다. [오버뷰의 전신 균형과 집기](robotics_system_overview.md#humanoid)
+
+**목표**(objective)는 손을 원하는 위치에 보내거나 몸의 기울기를 줄이는 것처럼 달성하려는 상태·동작이다. **제약**(constraint)은 관절 토크 한계나 접촉력이 가능한 범위처럼 계산에서 지켜야 하는 조건이다. **우선순위**(priority)는 목표가 충돌할 때 무엇을 먼저 보존할지 정한다. 예를 들어 균형을 위한 조건을 지키기 위해 손의 목표를 조정하는 설계를 생각할 수 있다.
+
+엄격한 우선순위는 높은 순위의 목표를 해치지 않는 범위에서 낮은 순위의 목표를 다루고, **가중치**(weight)는 여러 목표의 오차를 어느 비중으로 줄일지 정한다. 큰 가중치가 반드시 지켜지는 제약을 뜻하지는 않는다. 제어 방식마다 이 구성이 달라지므로, 어떤 값을 목표로 삼고 어떤 조건을 제약으로 둔 것인지 함께 확인한다. [전신 제어에서 우선순위·가중치·제약을 구분한 TALOS 연구](https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2022.826491/full)
 
 용어들의 관계와 단순화의 한계는 [보행 로봇 강의노트](https://underactuated.mit.edu/humanoids.html)를 따른다. “CoM의 수직 투영이 지지 영역 안”이라는 정적 직관 하나로 동적 보행 전체를 판단하지 않는다.
 
@@ -100,9 +182,22 @@ CoM은 질량 분포의 중심이고, CoP는 접촉 압력이 어디에 실리�
 
 **구동기**(actuator)는 물리적 힘·움직임을 만들고, **전달계**(transmission)는 이를 관절에 전달한다. 감속기(speed reducer)는 속도와 토크를 바꾸며 마찰(friction)·관성(inertia) 등 동적 특성에도 영향을 준다. **역구동성**(backdrivability)은 외부 힘으로 구동계를 역으로 움직이기 쉬운 성질이다. 센서가 외력을 알아내는 것과 기계적으로 잘 역구동되는 것은 별개의 성질이다. [구동·감속·마찰](https://modernrobotics.northwestern.edu/nu-gm-book-resource/8-9-actuation-gearing-and-friction/)
 
-모터 전류(motor current), 출력 관절 토크, 손끝의 힘은 서로 다른 물리량이다. 그 사이를 연결하려면 전달계·마찰·기구 모델이 필요하다.
+모터 전류(motor current), 출력 관절 토크, 손끝의 힘은 서로 다른 물리량이다. 그 사이를 연결하려면 전달계·마찰·기구 모델이 필요하다. 예를 들어 손끝에서 같은 힘을 버티더라도 팔을 접었는지 뻗었는지에 따라 관절에 필요한 토크가 달라진다. 그래서 전류 하나만 보고 물체에 가한 힘이나 파지 성공을 바로 판단할 수 없다. [손의 힘과 관절 토크](https://modernrobotics.northwestern.edu/nu-gm-book-resource/11-5-force-control/)
 
-센서 명세에서는 **측정 범위**(range), **분해능**(resolution), **불확실성**(uncertainty), **반복성**(repeatability)을 구별한다. 범위는 측정할 수 있는 값의 구간, 분해능은 구별할 수 있는 작은 변화, 불확실성은 측정 대상에 합리적으로 부여할 수 있는 값들의 퍼짐을 나타내는 수치, 반복성은 같은 조건에서 측정을 반복했을 때 결과가 얼마나 모이는지를 뜻한다. 예를 들어 0.1 N 간격으로 표시되는 센서라도 보정 오차가 있으면 같은 힘을 계속 잘못 표시할 수 있다. 작은 표시 간격과 실제 값에 가까운 측정은 별개다. 불확실성은 표준편차나 조건이 명시된 구간의 폭 등으로 표현할 수 있다. [측정 불확실성의 의미](https://physics.nist.gov/cuu/Uncertainty/glossary.html)
+### 센서 숫자를 사용할 때 확인할 조건
+
+센서 명세의 서로 다른 항목은 측정값을 사용할 때 서로 다른 질문에 답한다.
+
+| 항목 | 의미 | 사용하는 쪽에서 확인할 질문 |
+|---|---|---|
+| **측정 범위**(range) | 측정할 수 있는 값의 구간 | 지금 힘이 이 센서가 측정할 수 있는 범위 안인가? |
+| **분해능**(resolution) | 구별할 수 있는 작은 변화 | 관심 있는 힘의 변화를 구분할 만큼 세밀한가? |
+| **반복성**(repeatability) | 같은 조건에서 반복 측정한 결과가 모이는 정도 | 같은 힘을 재어도 값이 얼마나 달라지는가? |
+| **불확실성**(uncertainty) | 측정 대상에 합리적으로 부여할 수 있는 값들의 퍼짐을 나타내는 수치 | 이 측정값을 어느 정도의 불확실성과 함께 해석해야 하는가? |
+
+예를 들어 0.1 N 간격으로 표시되는 센서라도 보정 오차가 있으면 같은 힘을 계속 잘못 표시할 수 있다. 따라서 표시가 세밀하고 반복 측정값이 비슷하다는 사실만으로 실제 값에 가까운 측정이라고 판단할 수는 없다. 불확실성은 표준편차나 조건이 명시된 구간의 폭 등으로 표현할 수 있다. [측정 불확실성의 의미](https://physics.nist.gov/cuu/Uncertainty/glossary.html)
+
+측정값을 사용하는 다음 기능에서는 이 차이가 중요하다. 일정한 값이 반복되어도 실제 힘이 일정한 것인지, 측정 범위 밖의 값인지, 갱신되지 않은 과거 값인지를 구분해야 한다. 이 확인 과정은 [집기 사례의 센서값 해석](platform_robot_walkthrough.md#constant-force)에서 적용한다.
 
 힘 센서의 측정 범위와 기계적 과부하 한계도 다르다. ATI의 문서는 보정 범위를 넘는 포화(saturation) 시 출력이 유효하지 않을 수 있음을 설명한다. 제품별 처리와 상태 신호는 별도 확인한다. [ATI F/T FAQ, §2](https://www.ati-ia.com/library/documents/FT_FAQ.pdf)
 
@@ -114,6 +209,10 @@ CoM은 질량 분포의 중심이고, CoP는 접촉 압력이 어디에 실리�
 <a id="timing"></a>
 관측 시각, 메시지를 받은 시각, 제어 입력을 실제로 적용한 시각은 다를 수 있다. **제어 주기**(control period)는 반복 계산 사이의 예정 간격이고, **마감시간**(deadline)은 해당 계산 결과가 쓰일 수 있도록 완료해야 하는 시점이다. 실행 시점의 흔들림인 **지터**(jitter)와 정보가 늦게 도착하는 **지연**(latency)도 구분한다. 계산값이 맞더라도 늦으면 과거 상태에 대한 보정이 될 수 있다. **실시간 운영체제**(real-time operating system, RTOS)는 실행 순서와 시간 요구를 관리하는 기반이며, 사용 사실만으로 전체 제어의 시간 조건이 보장되지는 않는다. [실시간 시스템의 요구](https://design.ros2.org/articles/realtime_background.html)
 
+예를 들어 물체 위치 정보가 `x = 0.30`만 전달되면, 단위가 m인지 cm인지, 어느 좌표계인지, 언제 관측한 값인지 알 수 없다. 계획에 필요한 정보는 값과 함께 단위·좌표계·관측 시각·유효성을 해석할 수 있는 형태여야 한다. 그 정보가 메시지 안에 들어가는지, 인터페이스 규약으로 정해져 있는지는 구현에 따라 다르다.
+
 **서비스 품질**(quality of service, QoS)은 통신에서 신뢰성·이력·큐 등의 정책을 표현한다. 메시지가 전달됐다는 사실과 그 내용이 지금도 유효하다는 판단은 구분해야 한다. [ROS 2 QoS 설계](https://design.ros2.org/articles/qos.html)
 
 **액션**(action)은 ROS 2에서 목표·피드백·결과와 취소를 다루는 장시간 작업 인터페이스다. [ROS 2 Actions 설계](https://design.ros2.org/articles/actions.html)
+
+다만 ‘완료’의 뜻은 정의한 작업에 따라 달라진다. 손가락을 목표 각도로 닫는 작업의 완료와 물체를 성공적으로 집는 작업의 완료는 서로 다른 조건이다. 명령이 처리되었다는 알림, 측정한 손의 상태, 물체를 보유했다는 판단을 구분하는 과정을 [적용 사례](platform_robot_walkthrough.md#grasp-case)에서 이어 읽을 수 있다.
